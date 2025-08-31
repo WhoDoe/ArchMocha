@@ -257,7 +257,7 @@ max_desktop_len = 100
 max_login_len = 255
 max_password_len = 255
 # Remove F1/F2 command hints
-hide_key_hints = true
+hide_key_hints = false
 # language to use during the session
 lang =
 # path to file containing the mcookie value
