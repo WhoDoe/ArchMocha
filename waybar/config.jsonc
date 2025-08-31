@@ -1,0 +1,178 @@
+{
+  // ====== CẤU HÌNH THANH WAYBAR ======
+  "layer": "top", // Lớp hiển thị: luôn ở trên cùng các cửa sổ khác
+  "position": "top", // Vị trí thanh: ở phía trên màn hình
+  "spacing": -5, // Khoảng cách giữa các module: giá trị âm để các module khít nhau hơn
+  "height": 0, // Chiều cao thanh: 0 nghĩa là tự động theo nội dung và CSS
+  "margin-top": 0, // Lề trên: khoảng cách từ thanh đến cạnh trên màn hình
+  "margin-right": 10, // Lề phải: khoảng cách từ thanh đến cạnh phải màn hình
+  "margin-bottom": 0, // Lề dưới: khoảng cách từ thanh đến cạnh dưới màn hình
+  "margin-left": 10, // Lề trái: khoảng cách từ thanh đến cạnh trái màn hình
+  // ======= MODULES TRÊN BAR =======
+  "modules-left": [ // Các module bên trái thanh
+    "custom/power", // Module tùy chỉnh: nút Power
+    "custom/wofi", // Module tùy chỉnh: launcher ứng dụng Wofi
+    "network", // Module: trạng thái mạng (Wi-Fi/Ethernet)
+    "power-profiles-daemon", // Module: chế độ nguồn (balanced/performance/saver)
+    "hyprland/workspaces" // Module: workspaces của Hyprland
+  ],
+  "modules-center": [ // Các module ở giữa thanh
+    "temperature", // Module: nhiệt độ CPU
+    "cpu", // Module: sử dụng CPU
+    "clock", // Module: đồng hồ
+    "memory", // Module: sử dụng RAM
+    "battery" // Module: pin
+  ],
+  "modules-right": [ // Các module bên phải thanh
+    "custom/cava", // Module tùy chỉnh: visualizer âm thanh CAVA
+    "bluetooth", // Module: Bluetooth
+    "pulseaudio", // Module: âm lượng (PulseAudio/PipeWire)
+    "backlight" // Module: độ sáng màn hình
+  ],
+  // ================= CẤU HÌNH CHI TIẾT MODULE =================
+  // ======= [LEFT] =======
+  // -- Nút Power --
+  "custom/power": {
+    "format": "[ 󰐥 ]",  // Icon hiển thị trên bar
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "Power button", // Nội dung tooltip: "Nút nguồn"
+    "menu": "on-click",  // Kích hoạt menu khi click trái
+    "menu-file": "~/.config/waybar/scripts/power_menu.xml",  // Đường dẫn file XML
+    "menu-actions": {  // Kết nối item với lệnh
+        "suspend": "systemctl suspend",  // Lệnh ngủ
+        "reboot": "reboot",  // Lệnh khởi động lại
+        "shutdown": "shutdown now"  // Lệnh tắt máy
+    }
+  },
+  // -- App Launcher (Wofi) --
+  "custom/wofi": { // Cấu hình module tùy chỉnh: launcher Wofi
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "App Launcher (Wofi)", // Nội dung tooltip: "Mở App Launcher (Wofi)"
+    "format": "[  ]", // Định dạng: icon launcher với ngoặc vuông
+    "on-click": "wofi --show drun", // Click trái: mở Wofi ở chế độ drun (ứng dụng)
+    "on-click-right": "pkill -f '^wofi --show' || true" // Click phải: đóng Wofi nếu đang mở
+  },
+  "network": { // Cấu hình module: mạng
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "Interface: {ifname}\nSSID: {essid}\nSignal: {signalStrength}%\nIP: {ipaddr}\nGateway: {gwaddr}", // Nội dung tooltip: thông tin chi tiết mạng
+    "format": "[ {icon} ]", // Định dạng chung: icon mạng với ngoặc vuông
+    "format-ethernet": "[ 󰈁 ]", // Định dạng khi kết nối Ethernet: icon Ethernet
+    "format-disconnected": "[ 󰤮 ]", // Định dạng khi mất kết nối: icon disconnected
+    "format-icons": [ "󰤯", "󰤟", "󰤢", "󰤥", "󰤨" ], // Các icon theo cường độ tín hiệu Wi-Fi
+    "on-click": "kitty --class float-nmtui --name nmtui sh -lc 'nmtui'", // Click trái: mở nmtui trong terminal kitty
+    "on-click-right": "sh -c 'if nmcli radio wifi | grep -q enabled; then nmcli radio wifi off && notify-send \"Đã tắt Wi-Fi\"; else nmcli radio wifi on && notify-send \"Đã bật Wi-Fi\"; fi'" // Click phải: toggle Wi-Fi on/off
+  },
+  "power-profiles-daemon": { // Cấu hình module: chế độ nguồn
+    "format": "[ {icon} ]", // Định dạng: icon theo profile với ngoặc vuông
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "Power profile: {profile}\nDriver: {driver}", // Nội dung tooltip: profile và driver
+    "format-icons": { // Các icon cho từng chế độ
+      "power-saver": "󰾆", // Icon cho power-saver
+      "balanced": "󰾅", // Icon cho balanced
+      "performance": "󰓅" // Icon cho performance
+    }
+  },
+  "hyprland/workspaces": { // Cấu hình module: workspaces Hyprland
+    "format": "[{icon}]", // Định dạng: icon workspace với ngoặc vuông
+    "format-icons": { // Các icon cho trạng thái workspace
+      "urgent": "?", // Icon cho urgent
+      "default": "-", // Icon cho default
+      "active": "●" // Icon cho active
+    },
+    "persistent-workspaces": { "1": [], "2": [], "3": [] }, // Luôn hiển thị 3 workspaces
+    "on-click": "hyprctl dispatch workspace {id}", // Click trái: chuyển đến workspace
+    "on-click-right": "hyprctl dispatch movetoworkspace {id}" // Click phải: di chuyển cửa sổ đến workspace
+  },
+  // ======= [CENTER] =======
+  "temperature": { // Cấu hình module: nhiệt độ
+    "format": "[ 󰔏 {temperatureC}°C ]", // Định dạng: icon và nhiệt độ Celsius
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "󰔏 {temperatureF}°F", // Nội dung tooltip: nhiệt độ Fahrenheit
+    "interval": 5, // Cập nhật mỗi 5 giây
+    "critical-threshold": 80, // Ngưỡng critical: 80°C
+    "on-click": "kitty --title btop btop", // Click trái: mở btop
+    "on-click-right": "notify-send \"Sensors\" \"$(sensors | sed -n '1,80p')\"" // Click phải: hiển thị thông tin sensors
+  },
+  "cpu": { // Cấu hình module: CPU
+    "format": "[ 󰘚 {usage}% ]", // Định dạng: icon và phần trăm sử dụng
+    "tooltip": true, // Bật tooltip
+    "interval": 1, // Cập nhật mỗi 1 giây
+    "on-click": "kitty --title btop btop", // Click trái: mở btop
+    "on-click-right": "notify-send \"CPU governor\" \"$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null || echo unknown)\"" // Click phải: hiển thị CPU governor
+  },
+  "clock": { // Cấu hình module: đồng hồ
+    "format": "[ 󰥔 {:%H:%M:%S} ]", // Định dạng: icon và giờ:phút
+    "format-alt": "[ 󰭨 {:%d-%m-%Y} ]", // Định dạng thay thế: ngày-tháng-năm
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>", // Nội dung tooltip: lịch
+    "interval": 1 // Cập nhật mỗi 1 giây
+  },
+  "memory": { // Cấu hình module: RAM
+    "format": "[ 󰍛 {percentage}% ]", // Định dạng: icon và phần trăm
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "󰍛 {used:0.1f}G / {total:0.1f}G", // Nội dung tooltip: used/total GB
+    "interval": 5, // Cập nhật mỗi 5 giây
+    "bar": true, // Bật thanh bar
+    "gradient": true, // Bật gradient cho bar
+    "on-click": "kitty --title btop btop", // Click trái: mở btop
+    "on-click-right": "notify-send \"Top memory\" \"$(ps axch -o cmd:15,%mem --sort=-%mem | head -n 8)\"" // Click phải: hiển thị top processes ngốn RAM
+  },
+  "battery": { // Cấu hình module: pin
+    "states": { // Các trạng thái pin
+      "good": 90, // Good: >90%
+      "warning": 30, // Warning: <=30%
+      "critical": 15 // Critical: <=15%
+    },
+    "tooltip": true, // Bật tooltip
+    "format": "[ {icon} {capacity}% ]", // Định dạng: icon và phần trăm
+    "format-charging": "[  {icon} {capacity}% ]", // Định dạng khi sạc: thêm icon sạc
+    "format-icons": [ "󰁺","󰁻","󰁼","󰁽","󰁾","󰁿","󰂀","󰂁","󰂂","󰂃","󰁹" ], // Các icon theo mức pin
+    "interval": 5, // Cập nhật mỗi 5 giây
+    "on-click": "kitty --title btop btop", // Click trái: mở btop
+    "on-click-right": "notify-send \"Battery info\" \"$(upower -i $(upower -e | grep BAT) 2>/dev/null | sed -n \"1,120p\")\"" // Click phải: hiển thị info pin
+  },
+  // ======= [RIGHT] =======
+  "custom/cava": { // Cấu hình module tùy chỉnh: CAVA
+    "format": "{}", // Định dạng: output từ script
+    "exec": "~/.config/waybar/scripts/cava.sh", // Script thực thi: cava.sh
+    "interval": 0, // Cập nhật realtime (0 = liên tục)
+    "on-click": "kitty --hold cava & kitty --hold unimatrix -a -b -c cyan -f -i -l k -s 95", // Click trái: mở cava và unimatrix trong 2 kitty riêng
+    "on-click-right": "firefox --new-window https://www.youtube.com/playlist?list=LL" // Click phải: mở playlist "Liked videos" trong window mới
+  },
+  "bluetooth": { // Cấu hình module: Bluetooth
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "[Bluetooth]", // Nội dung tooltip: "[Bluetooth]"
+    "format": "[ 󰂯 ]", // Định dạng khi bật: icon bật
+    "format-disabled": "[ 󰂲 ]", // Định dạng khi tắt: icon tắt
+    "on-click": "blueman-manager", // Click trái: mở blueman-manager
+    "on-click-right": "rfkill toggle bluetooth" // Click phải: toggle Bluetooth
+  },
+  "pulseaudio": { // Cấu hình module: âm lượng
+    "scroll-step": 10, // Bước cuộn: ±10%
+    "format": "{icon} {volume}%", // Định dạng: icon và phần trăm
+    "format-muted": "󰝟 [MUTE] {volume}%", // Định dạng khi mute: icon mute và phần trăm
+    "format-bluetooth": "{icon} {volume}%", // Định dạng khi dùng Bluetooth: icon và phần trăm
+    "on-click": "pavucontrol", // Click trái: mở pavucontrol
+    "on-click-right": "pamixer -t", // Click phải: toggle mute
+    "format-icons": [ // Các icon theo mức âm lượng
+      "󰕿 [░░░░░░░░░░]", "󰖀 [█░░░░░░░░░]", "󰖀 [██░░░░░░░░]",
+      "󰖀 [███░░░░░░░]", "󰕾 [████░░░░░░]", "󰕾 [█████░░░░░]",
+      "󰕾 [██████░░░░]", "󰕾 [███████░░░]", "󱄡 [████████░░]",
+      "󱄡 [█████████░]", "󱄡 [██████████]"
+    ]
+  },
+  "backlight": { // Cấu hình module: độ sáng
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "[Light]", // Nội dung tooltip: "[Light]"
+    "scroll-step": 10, // Bước cuộn: ±10%
+    "format": "{icon} {percent}%", // Định dạng: icon và phần trăm
+    "format-icons": [ // Các icon theo mức độ sáng
+      "󰛨 [░░░░░░░░░░]","󰃞 [█░░░░░░░░░]","󰃟 [██░░░░░░░░]",
+      "󰃝 [███░░░░░░░]","󰃝 [████░░░░░░]","󰃝 [█████░░░░░]",
+      "󰃝 [██████░░░░]","󰃠 [███████░░░]","󰃠 [████████░░]",
+      "󰃠 [█████████░]","󰃠 [██████████]"
+    ],
+    "on-click": "brightnessctl set 25%- && notify-send 'Giảm độ sáng 25%'", // Click trái: giảm 25%
+    "on-click-right": "brightnessctl set +25% && notify-send 'Tăng độ sáng 25%'" // Click phải: tăng 25%
+  }
+}

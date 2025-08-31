@@ -1,0 +1,2 @@
+git clone https://github.com/whodoe/archmocha.git
+./archmocha/setup-script/run.sh

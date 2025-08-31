@@ -1,0 +1,320 @@
+## Tệp cấu hình cho CAVA.
+# Xóa dấu ; để thay đổi các tham số.
+# Đây là tệp cấu hình mặc định cho CAVA, một công cụ trực quan hóa âm thanh dạng thanh bar trong terminal hoặc môi trường đồ họa. Mỗi phần được phân loại rõ ràng, và tôi sẽ chú thích chi tiết bằng tiếng Việt cho từng tham số: giải thích chức năng, cách sử dụng, và gợi ý tùy chỉnh. Chú thích được đặt sau mỗi dòng để dễ theo dõi.
+
+[general]
+# Chế độ làm mịn. Có thể là 'normal' (bình thường), 'scientific' (khoa học), hoặc 'waves' (sóng). ĐÃ BỎ (DEPRECATED) từ phiên bản 0.6.0 trở đi, không nên sử dụng nữa.
+mode = scientific
+# Chức năng: Xác định cách làm mịn hình ảnh trực quan hóa (ví dụ: waves tạo hiệu ứng sóng). Gợi ý tùy chỉnh: Không dùng nữa, thay vào đó sử dụng các tùy chọn smoothing mới hơn như noise_reduction để kiểm soát độ mịn.
+
+# Chỉ chấp nhận giá trị không âm.
+framerate = 60
+# Chức năng: Đặt tốc độ khung hình (frames per second) cho việc hiển thị. Giá trị cao hơn làm hình ảnh mượt mà hơn. Gợi ý tùy chỉnh: Tăng lên 120 nếu máy tính mạnh để hình ảnh mượt mà, nhưng giảm xuống 30 nếu tài nguyên hạn chế để tiết kiệm CPU.
+
+# 'autosens' sẽ cố gắng giảm độ nhạy nếu thanh bar đạt đỉnh. 1 = bật, 0 = tắt
+# autosens mới từ 0.6.0 cho các giá trị thấp (dải động)
+# 'overshoot' cho phép thanh bar vượt quá (theo % chiều cao terminal) mà không kích hoạt autosens. ĐÃ BỎ từ 0.6.0
+autosens = 1
+# Chức năng: Tự động điều chỉnh độ nhạy để tránh thanh bar vượt quá giới hạn. Gợi ý tùy chỉnh: Bật (1) cho trải nghiệm tự động, tắt (0) nếu bạn muốn kiểm soát thủ công bằng sensitivity.
+overshoot = 20
+# Chức năng: Cho phép thanh bar vượt quá chiều cao màn hình một chút mà không giảm độ nhạy. Gợi ý tùy chỉnh: Không dùng nữa, sử dụng noise_reduction để kiểm soát độ mịn thay thế.
+
+# Độ nhạy thủ công theo %. Nếu autosens bật, đây chỉ là giá trị ban đầu.
+# 200 nghĩa là chiều cao gấp đôi. Chỉ chấp nhận giá trị không âm.
+sensitivity = 120
+# Chức năng: Điều chỉnh độ nhạy của thanh bar với âm thanh đầu vào (cao hơn thì thanh bar cao hơn). Gợi ý tùy chỉnh: Tăng lên 150 cho âm thanh yếu, giảm xuống 50 cho âm thanh mạnh để tránh vượt quá màn hình.
+
+# Số lượng thanh bar (0-512). 0 đặt tự động (lấp đầy console).
+# Chiều rộng thanh bar và khoảng cách giữa các thanh bar theo số ký tự.
+bars = 0
+# Chức năng: Số lượng thanh bar hiển thị, đại diện cho các dải tần số. Gợi ý tùy chỉnh: Đặt 20-50 cho màn hình nhỏ, 100+ cho màn hình lớn để chi tiết hơn; tự động (0) là lựa chọn tốt nhất cho hầu hết trường hợp.
+bar_width = 4
+# Chức năng: Chiều rộng của mỗi thanh bar (theo ký tự). Gợi ý tùy chỉnh: Tăng lên 3-4 để thanh bar dày hơn, dễ nhìn; giảm xuống 1 cho nhiều thanh bar hơn.
+bar_spacing = 1
+# Chức năng: Khoảng cách giữa các thanh bar (theo ký tự). Gợi ý tùy chỉnh: Tăng lên 2 để thanh bar cách xa nhau, tạo không gian; giảm xuống 0 để sát nhau như biểu đồ liền mạch.
+
+# bar_height chỉ dùng cho output dạng "noritake"
+; bar_height = 32
+# Chức năng: Chiều cao thanh bar cho thiết bị Noritake VFD. Gợi ý tùy chỉnh: Điều chỉnh theo độ phân giải của thiết bị, ví dụ 64 cho màn hình cao hơn.
+
+# Đối với SDL, chiều rộng và khoảng cách theo pixel, mặc định là:
+; bar_width = 20
+# Chức năng: Chiều rộng thanh bar trong chế độ SDL (đồ họa). Gợi ý tùy chỉnh: Tăng lên 30 để thanh bar lớn hơn trong cửa sổ đồ họa.
+; bar_spacing = 5
+# Chức năng: Khoảng cách thanh bar trong SDL. Gợi ý tùy chỉnh: Giảm xuống 2 để hiển thị nhiều thanh bar hơn.
+
+# sdl_glsl có giá trị mặc định này, chỉ dùng để tính số thanh bar tối đa.
+; bar_width = 1
+# Chức năng: Chiều rộng thanh bar trong chế độ GLSL (shader). Gợi ý tùy chỉnh: Giữ nguyên để tính toán tự động.
+; bar_spacing = 0
+# Chức năng: Khoảng cách trong GLSL. Gợi ý tùy chỉnh: Tăng nếu muốn khoảng trống giữa thanh bar.
+
+# Tần số cắt dưới và cắt trên cho thanh bar thấp nhất và cao nhất
+# Băng thông của trình trực quan hóa.
+# Lưu ý: Có băng thông tối thiểu 43MHz x số thanh bar.
+# CAVA sẽ tự động tăng tần số cắt trên nếu băng thông quá thấp.
+lower_cutoff_freq = 50
+# Chức năng: Tần số thấp nhất (bass) cho thanh bar đầu tiên. Gợi ý tùy chỉnh: Giảm xuống 20 cho bass sâu hơn, tăng lên 100 nếu muốn tập trung mid/high.
+higher_cutoff_freq = 20000
+# Chức năng: Tần số cao nhất (treble) cho thanh bar cuối cùng. Gợi ý tùy chỉnh: Tăng lên 20000 cho âm thanh cao cấp, giảm xuống 5000 nếu chỉ quan tâm bass/mid.
+
+# Giây không có input trước khi cava vào chế độ ngủ. CAVA sẽ không FFT hoặc vẽ, chỉ kiểm tra input mỗi giây. Sẽ thức dậy khi có input. 0 = tắt.
+sleep_timer = 0
+# Chức năng: Thời gian chờ trước khi chuyển sang chế độ tiết kiệm năng lượng. Gợi ý tùy chỉnh: Đặt 10-30 giây để tiết kiệm CPU khi không có nhạc, 0 nếu muốn luôn hoạt động.
+
+[input]
+# Phương pháp thu âm thanh. Có thể là: 'fifo', 'portaudio', 'pipewire', 'alsa', 'pulse', 'sndio', 'oss', 'jack' hoặc 'shmem'
+# Mặc định theo thứ tự: 'oss', 'pipewire', 'sndio', 'jack', 'pulse', 'alsa', 'portaudio' hoặc 'fifo', tùy theo hỗ trợ build.
+# Trên Mac mặc định 'portaudio' hoặc 'fifo'
+# Trên Windows tự động, không cần cấu hình input.
+#
+# Tất cả phương pháp dùng biến 'source' để định nguồn âm thanh.
+#
+# Với pulseaudio và pipewire, 'source' là nguồn. Mặc định: 'auto', dùng monitor của sink mặc định (tất cả sink output có monitor input).
+#
+# Với pipewire, 'source' là tên object hoặc object.serial của thiết bị thu.
+# Hỗ trợ cả input và output.
+#
+# Với alsa, 'source' là thiết bị thu.
+# Với fifo, 'source' là đường dẫn file fifo.
+# Với shmem, 'source' là /squeezelite-AA:BB:CC:DD:EE:FF với 'AA:BB:CC:DD:EE:FF' là địa chỉ MAC của squeezelite.
+#
+# Với sndio, 'source' là descriptor thu âm thô hoặc sub-device giám sát, ví dụ 'rsnd/2' hoặc 'snd/1'. Mặc định: 'default'.
+# Xem README.md để thiết lập CAVA cho sndio.
+#
+# Với oss, 'source' là đường dẫn thiết bị âm thanh, ví dụ '/dev/dsp2'. Mặc định: '/dev/dsp', tức thiết bị mặc định.
+# Xem README.md để thiết lập CAVA cho OSS trên FreeBSD.
+#
+# Với jack, 'source' là tên server JACK kết nối, ví dụ 'foobar'. Mặc định: 'default'.
+# Xem README.md để thiết lập CAVA cho JACK.
+#
+; method = pulse
+# Chức năng: Phương pháp thu âm thanh chính. Gợi ý tùy chỉnh: Sử dụng 'pulse' cho hệ thống PulseAudio (Linux phổ biến), 'pipewire' cho PipeWire hiện đại, 'alsa' cho thu trực tiếp từ hardware.
+; source = auto
+# Chức năng: Nguồn âm thanh cụ thể. Gợi ý tùy chỉnh: Giữ 'auto' cho tự động, hoặc chỉ định như 'hw:0,0' cho ALSA nếu có nhiều thiết bị.
+
+; method = pipewire
+; source = auto
+# Tương tự trên, dành cho PipeWire.
+
+; method = alsa
+; source = hw:Loopback,1
+# Ví dụ cho ALSA với loopback.
+
+; method = fifo
+; source = /tmp/mpd.fifo
+# Dùng cho FIFO từ MPD hoặc nguồn khác.
+
+; method = shmem
+; source = /squeezelite-AA:BB:CC:DD:EE:FF
+# Dùng cho SqueezeLite.
+
+; method = portaudio
+; source = auto
+# Dùng cho Mac hoặc Windows.
+
+; method = sndio
+; source = default
+# Dùng cho sndio trên BSD.
+
+; method = oss
+; source = /dev/dsp
+# Dùng cho OSS.
+
+; method = jack
+; source = default
+# Dùng cho JACK audio server.
+
+# Các tùy chọn 'sample_rate', 'sample_bits', 'channels' và 'autoconnect' có thể cấu hình cho một số phương pháp:
+# sample_rate: fifo, pipewire, sndio, oss
+# sample_bits: fifo, pipewire, sndio, oss
+# channels: sndio, oss, jack
+# autoconnect: jack
+# Các phương pháp khác bỏ qua các thiết lập này.
+#
+# Với 'sndio' và 'oss', đây chỉ là giá trị ưu tiên, nếu không hỗ trợ thì thiết bị dùng giá trị khác.
+# Ví dụ: 48000, 32 và 2, nhưng thiết bị chỉ hỗ trợ 44100, 16 và 1, thì dùng 44100, 16 và 1.
+#
+sample_rate = 48000
+# Chức năng: Tần số lấy mẫu âm thanh (Hz). Gợi ý tùy chỉnh: 44100 là chuẩn CD, tăng lên 48000 cho chất lượng cao hơn nếu thiết bị hỗ trợ.
+sample_bits = 32
+# Chức năng: Độ sâu bit âm thanh. Gợi ý tùy chỉnh: 16 cho tiêu chuẩn, 24 hoặc 32 cho âm thanh chất lượng cao.
+channels = 2
+# Chức năng: Số kênh (stereo=2, mono=1). Gợi ý tùy chỉnh: 2 cho âm thanh lập thể, 1 cho mono để tiết kiệm.
+autoconnect = 2
+# Chức năng: Tự động kết nối trong JACK. Gợi ý tùy chỉnh: Đặt số kết nối cần thiết, ví dụ 2 cho stereo.
+
+[output]
+# Phương pháp output. Có thể là 'ncurses', 'noncurses', 'raw', 'noritake', 'sdl' hoặc 'sdl_glsl'.
+# 'noncurses' (mặc định) dùng buffer và di chuyển con trỏ để chỉ in thay đổi mỗi khung trong terminal. Tiết kiệm tài nguyên và ít lỗi vsync hơn 'ncurses'.
+#
+# 'raw' là stream dữ liệu 8 hoặc 16 bit (cấu hình qua 'bit_format') chiều cao thanh bar để gửi ứng dụng khác.
+# 'raw' mặc định 200 thanh bar, điều chỉnh qua 'bars' trên.
+#
+# 'noritake' output bitmap cho màn hình Noritake VFD ở chế độ graphic. Chỉ hỗ trợ series 3000 hiện tại.
+#
+# 'sdl' dùng Simple DirectMedia Layer để render đồ họa.
+# 'sdl_glsl' dùng SDL tạo context OpenGL. Viết shader riêng hoặc dùng predefined.
+method = noncurses
+# Chức năng: Phương pháp hiển thị đầu ra. Gợi ý tùy chỉnh: 'noncurses' cho terminal mượt mà, 'sdl' cho cửa sổ đồ họa, 'sdl_glsl' cho hiệu ứng shader tùy chỉnh.
+
+# Hướng hiển thị. Có thể là 'bottom' (dưới), 'top' (trên), 'left' (trái), 'right' (phải) hoặc 'horizontal' (ngang). Mặc định 'bottom'. 'left' và 'right' chỉ hỗ trợ sdl và ncurses. 'horizontal' (thanh lên xuống từ giữa) chỉ hỗ trợ noncurses.
+# Lưu ý: Nhiều font có glyph lạ hoặc thiếu cho hướng khác 'bottom', có thể làm output sai.
+orientation = horizontal
+# Chức năng: Hướng của thanh bar. Gợi ý tùy chỉnh: 'bottom' cho tiêu chuẩn (thanh mọc từ dưới lên), 'horizontal' cho hiệu ứng sóng đối xứng.
+
+# Kênh hiển thị. Có thể 'stereo' hoặc 'mono'.
+# 'stereo' mirror cả hai kênh với tần thấp ở giữa.
+# 'mono' output từ trái sang phải, thấp đến cao.
+# 'mono_option' đặt mono lấy từ 'left', 'right' hoặc 'average'.
+# 'reverse' =1 để đảo chiều tần số.
+channels = stereo
+# Chức năng: Kênh âm thanh hiển thị. Gợi ý tùy chỉnh: 'stereo' cho âm thanh lập thể, 'mono' cho đơn giản.
+; mono_option = average
+# Chức năng: Nguồn cho mono. Gợi ý tùy chỉnh: 'average' để trung bình hai kênh, 'left' hoặc 'right' nếu chỉ dùng một kênh.
+reverse = 0
+# Chức năng: Đảo chiều tần số. Gợi ý tùy chỉnh: Bật (1) để tần cao ở trái, thấp ở phải.
+
+# Đích output raw.
+# Trên Linux, tạo fifo nếu không tồn tại.
+# Trên Windows, tạo named pipe nếu không tồn tại.
+; raw_target = /dev/stdout
+# Chức năng: Đích cho dữ liệu raw. Gợi ý tùy chỉnh: '/dev/stdout' để pipe vào ứng dụng khác, hoặc file tùy chỉnh.
+
+# Định dạng dữ liệu raw. Có thể 'binary' hoặc 'ascii'.
+; data_format = binary
+# Chức năng: Định dạng raw. Gợi ý tùy chỉnh: 'binary' cho hiệu suất, 'ascii' cho dễ đọc/debug.
+
+# Định dạng bit binary, có thể '8bit' (0-255) hoặc '16bit' (0-65530).
+; bit_format = 16bit
+# Chức năng: Độ sâu bit cho binary. Gợi ý tùy chỉnh: '16bit' cho độ chính xác cao, '8bit' cho tiết kiệm.
+
+# Giá trị max ascii. Trong 'ascii', dải từ 0 đến giá trị này.
+; ascii_max_range = 2000
+# Chức năng: Giới hạn max cho ascii. Gợi ý tùy chỉnh: Tăng lên 2000 nếu cần dải rộng hơn.
+
+# Dấu phân cách ascii. Trong ascii, mỗi thanh bar và khung cách bởi delimiters.
+# Dùng giá trị thập phân bảng ascii (ví dụ 59 = ';' và 10 = '\n' (line feed)).
+; bar_delimiter = 59
+# Chức năng: Dấu cách thanh bar. Gợi ý tùy chỉnh: Thay bằng 44 (,) nếu cần định dạng CSV-like.
+; frame_delimiter = 10
+# Chức năng: Dấu cách khung. Gợi ý tùy chỉnh: Giữ 10 cho line feed tiêu chuẩn.
+
+# Kích thước và vị trí cửa sổ sdl. -1,-1 là giữa màn hình.
+; sdl_width = 1000
+# Chức năng: Chiều rộng cửa sổ SDL. Gợi ý tùy chỉnh: 1920 cho full HD.
+; sdl_height = 500
+# Chức năng: Chiều cao. Gợi ý tùy chỉnh: 1080 cho cao hơn.
+; sdl_x = -1
+# Chức năng: Vị trí X. Gợi ý tùy chỉnh: 0 cho góc trái.
+; sdl_y= -1
+# Chức năng: Vị trí Y. Gợi ý tùy chỉnh: 0 cho góc trên.
+; sdl_full_screen = 0
+# Chức năng: Toàn màn hình. Gợi ý tùy chỉnh: Bật (1) cho chế độ fullscreen.
+
+# Đặt nhãn trên thanh bar trục x. Có thể 'frequency' hoặc 'none'. Mặc định: 'none'
+# 'frequency' hiển thị tần số cắt dưới của thanh bar phía trên.
+# Chỉ hỗ trợ ncurses và noncurses.
+; xaxis = none
+# Chức năng: Nhãn trục X. Gợi ý tùy chỉnh: 'frequency' để hiển thị tần số, hữu ích cho debug.
+
+# Bật đồng bộ hóa sync. 1 = bật, 0 = tắt
+# Loại bỏ flickering trong Alacritty.
+# Mặc định tắt vì hành vi trong terminal khác chưa biết.
+synchronized_sync = 0
+# Chức năng: Đồng bộ để tránh nhấp nháy. Gợi ý tùy chỉnh: Bật (1) nếu dùng Alacritty.
+
+# Shader cho sdl_glsl, nằm ở $HOME/.config/cava/shaders
+vertex_shader = pass_through.vert
+# Chức năng: Vertex shader. Gợi ý tùy chỉnh: Thay bằng file tùy chỉnh cho hiệu ứng.
+fragment_shader = bar_spectrum.frag
+# Chức năng: Fragment shader. Gợi ý tùy chỉnh: Sử dụng shader gradient hoặc hiệu ứng ánh sáng.
+
+# Với glsl, tiếp tục render dù không có audio
+; continuous_rendering = 0
+# Chức năng: Render liên tục. Gợi ý tùy chỉnh: Bật (1) để màn hình không dừng khi im lặng.
+
+# Tắt blank console (screen saver) trong tty
+# (Không hỗ trợ FreeBSD)
+; disable_blanking = 0
+# Chức năng: Ngăn màn hình tắt. Gợi ý tùy chỉnh: Bật (1) cho session dài.
+
+# Hiển thị thanh phẳng dưới màn khi idle, 1 = bật, 0 = tắt
+show_idle_bar_heads = 1
+# Chức năng: Thanh idle. Gợi ý tùy chỉnh: Bật để có hiển thị tối thiểu khi không nhạc.
+
+# Hiển thị waveform thay vì spectrum tần số, 1 = bật, 0 = tắt
+waveform = 0
+# Chức năng: Chế độ waveform. Gợi ý tùy chỉnh: Bật (1) cho dạng sóng thời gian thực thay vì tần số.
+
+[color]
+# Màu có thể là một trong bảy màu predefined: black, blue, cyan, green, magenta, red, white, yellow.
+# Hoặc định nghĩa hex '#xxxxxx' (hex phải trong ''). Màu user-defined cần terminal hỗ trợ thay đổi màu như Gnome-terminal hoặc rxvt.
+# Mặc định giữ màu terminal hiện tại.
+; background = default
+# Chức năng: Màu nền. Gợi ý tùy chỉnh: '#000000' cho đen hoàn toàn.
+; foreground = default
+# Chức năng: Màu thanh bar. Gợi ý tùy chỉnh: 'green' cho màu xanh lá cơ bản.
+
+# SDL và sdl_glsl chỉ hỗ trợ hex, mặc định:
+; background = '#111111'
+# Chức năng: Nền cho SDL. Gợi ý tùy chỉnh: '#000000' cho tối.
+; foreground = '#33ffff'
+# Chức năng: Thanh bar cho SDL. Gợi ý tùy chỉnh: '#FF0000' cho đỏ.
+
+# Chế độ gradient, chỉ hỗ trợ hex,
+# background phải hex hoặc comment out. 1 = bật, 0 = tắt.
+# Có thể định 8 màu khác nhau. Từ dưới lên trên màn hình.
+gradient = 1
+# Chức năng: Gradient màu. Gợi ý tùy chỉnh: Bật để thanh bar chuyển màu dần, đẹp mắt.
+gradient_color_1 = '#94e2d5'
+# Chức năng: Màu 1 (dưới cùng). Gợi ý tùy chỉnh: Thay bằng màu yêu thích cho bass.
+gradient_color_2 = '#89dceb'
+gradient_color_3 = '#74c7ec'
+gradient_color_4 = '#89b4fa'
+gradient_color_5 = '#cba6f7'
+gradient_color_6 = '#f5c2e7'
+gradient_color_7 = '#eba0ac'
+gradient_color_8 = '#f38ba8'
+# Chức năng: Các màu gradient tiếp theo. Gợi ý tùy chỉnh: Sử dụng palette màu từ công cụ như Coolors.co để tạo gradient tùy chỉnh, ví dụ từ xanh đến đỏ.
+
+[smoothing]
+# Phần trăm làm mịn integral. Từ 0 - 100.
+# Giá trị cao hơn mịn hơn nhưng kém chính xác. 0 tắt.
+# ĐÃ BỎ từ 0.8.0, dùng noise_reduction thay thế.
+; integral = 100
+# Chức năng: Làm mịn integral. Gợi ý tùy chỉnh: Không dùng, chuyển sang noise_reduction.
+
+# Bật hoặc tắt "Monstercat smoothing" với hoặc không waves. 0 tắt.
+monstercat = 1
+# Chức năng: Hiệu ứng Monstercat (làm mịn kiểu mèo). Gợi ý tùy chỉnh: Bật (1) cho hiệu ứng mịn đặc biệt.
+waves = 0
+# Chức năng: Thêm waves vào Monstercat. Gợi ý tùy chỉnh: Bật để tạo sóng lan tỏa.
+
+# Phần trăm gravity cho "drop off". Giá trị cao hơn thanh drop nhanh hơn.
+# Chỉ không âm. 50 nửa gravity, 200 gấp đôi. 0 tắt "drop off".
+# ĐÃ BỎ từ 0.8.0, dùng noise_reduction thay thế.
+; gravity = 100
+# Chức năng: Tốc độ rơi của thanh bar. Gợi ý tùy chỉnh: Không dùng nữa.
+
+# Trong chiều cao bar, bar thấp hơn này không vẽ.
+# ĐÃ BỎ từ 0.8.0
+; ignore = 0
+# Chức năng: Bỏ qua thanh thấp. Gợi ý tùy chỉnh: Không dùng.
+
+# Giảm nhiễu, int 0 - 100. Mặc định 77
+# Trực quan thô rất nhiễu, yếu tố này điều chỉnh filter integral và gravity để giữ tín hiệu mịn
+# 100 rất chậm và mịn, 0 nhanh nhưng nhiễu.
+; noise_reduction = 50
+# Chức năng: Giảm nhiễu tổng thể. Gợi ý tùy chỉnh: 80-90 cho mịn đẹp, 50 cho phản hồi nhanh với nhạc EDM.
+
+[eq]
+# Phần này phức tạp. Có thể có bao nhiêu key tùy ý.
+# Nhớ uncomment nhiều hơn một key! Nhiều key = chính xác hơn.
+# Xem readme.md trên GitHub để giải thích và ví dụ.
+ 1 = 1 # bass
+ 2 = 1
+ 3 = 1 # midtone
+ 4 = 1
+ 5 = 1 # treble
+# Chức năng: Equalizer để điều chỉnh độ nhạy từng dải tần (key là hệ số nhân cho tần số tương ứng). Gợi ý tùy chỉnh: Uncomment và đặt giá trị như 1.5 cho bass (key 1-2) để tăng bass, 0.8 cho treble (key 4-5) để giảm cao; thêm nhiều key (ví dụ 6=1, 7=0.5) cho EQ chi tiết hơn, giống như equalizer âm nhạc.

@@ -1,0 +1,154 @@
+/* ╔═════════════════════════════════════════════╗
+   ║ Wofi Catppuccin Mocha Glass – Clean Edition ║
+   ╚═════════════════════════════════════════════╝ */
+/* ==== Giao diện chung ==== */
+* {
+border: none;
+border-radius: 16px;
+padding: 0;
+font-family: "JetBrainsMono Nerd Font", "Noto Sans", "FontAwesome", sans-serif;
+font-weight: 700;
+font-size: 15px;
+color: #cdd6f4;
+text-shadow: 0 0 4px #31324455, 0 0 1px #94e2d555;
+}
+/* ==== Window Glass ==== */
+window {
+background: linear-gradient(133deg, rgba(30,30,46,0.97) 63%, rgba(49,50,68,0.93) 100%);
+border: 2.5px solid #94e2d5;
+border-radius: 20px;
+margin: 8px;
+box-shadow: 0 0 36px 6px #94e2d522, 0 0 120px 0 #f5c2e722 inset;
+}
+/* ==== Input Box ==== */
+#input {
+background: linear-gradient(125deg, rgba(49,50,68,0.88) 75%, rgba(148,226,213,0.09) 100%);
+border: 2px solid #94e2d5;
+color: #cdd6f4;
+border-radius: 13px;
+padding: 10px 22px;
+font-size: 17px;
+font-weight: 800;
+margin: 18px 16px 18px 16px;
+box-shadow: 0 0 12px 3px #94e2d513;
+outline: none;
+}
+#input:focus {
+border-color: #f5c2e7;
+box-shadow: 0 0 24px 6px #f5c2e725;
+}
+/* ==== Danh sách Entry ==== */
+#list {
+background: none;
+border-radius: 14px;
+padding: 8px 8px 5px 8px;
+}
+/* ==== Mỗi Entry ==== */
+#entry {
+background: linear-gradient(135deg, #1e1e2e 68%, #313244 100%);
+border: 2px solid;
+margin: 7px 10px;
+padding: 10px 21px;
+border-radius: 16px;
+color: #94e2d5;
+font-weight: 700;
+font-size: 15px;
+box-shadow: 0 0 8px 1px #94e2d516;
+text-shadow: 0 0 4px #94e2d520;
+}
+#entry:selected {
+background: linear-gradient(135deg, rgba(245,194,231,0.18) 60%, rgba(148,226,213,0.20) 100%);
+border-color: #f5c2e7;
+color: #f5c2e7;
+box-shadow: 0 0 18px 2px #f5c2e744, 0 0 0 2px #94e2d529 inset;
+}
+#entry:active {
+background: linear-gradient(135deg, #f5c2e7 0%, #f5e0dc 15%, #94e2d5 80%, #f5c2e7 100%);
+color: #313244;
+border-color: #f9e2af;
+text-shadow: 0 0 8px #f9e2af60;
+}
+/* ==== Icon app (chỉ PNG/SVG) ==== */
+#icon {
+margin-right: 14px;
+border-radius: 8px;
+background: linear-gradient(135deg, rgba(148,226,213,0.13) 70%, rgba(245,194,231,0.08) 100%);
+border: 1.3px solid;
+box-shadow: 0 0 5px 0 #94e2d520;
+}
+#entry:selected #icon, #entry:active #icon {
+border-color: #f5c2e7;
+box-shadow: 0 0 8px 1.5px #f5c2e735;
+background: linear-gradient(135deg, rgba(245,194,231,0.13) 60%, rgba(148,226,213,0.15) 100%);
+}
+/* ==== Tên app nổi bật ==== */
+#text {
+font-weight: 800;
+color: #f9e2af;
+text-shadow: 0 0 8px #94e2d518, 0 0 2px #f5e0dc;
+}
+/* ==== Mô tả app ==== */
+#desc {
+color: #94e2d5;
+font-size: 13px;
+font-style: italic;
+margin-top: 2px;
+margin-bottom: 2px;
+opacity: 0.70;
+}
+/* ==== Button ==== */
+button, #button {
+background: linear-gradient(135deg, #313244 35%, #45475a 100%);
+border: 2px solid #94e2d5;
+color: #94e2d5;
+border-radius: 16px;
+font-weight: 800;
+font-size: 15px;
+margin: 14px 18px;
+padding: 8px 26px;
+box-shadow: 0 0 6px 0 #94e2d52a, 0 0 0 2px #f5c2e710 inset;
+}
+button:focus, #button:focus, button:hover, #button:hover {
+background: linear-gradient(135deg, rgba(245,194,231,0.13) 40%, rgba(148,226,213,0.18) 100%);
+border-color: #f5c2e7;
+color: #f5c2e7;
+box-shadow: 0 0 10px 0 #f5c2e744, 0 0 0 2px #94e2d518 inset;
+text-shadow: 0 0 6px #f5c2e755;
+}
+/* ==== Scrollbar ==== */
+scrollbar, scrollbar slider {
+background: transparent;
+border-radius: 11px;
+}
+scrollbar slider {
+background: linear-gradient(135deg, #94e2d5 50%, #f5c2e7 100%);
+opacity: 0.38;
+border-radius: 11px;
+}
+/* ==== Notification ==== */
+#notification {
+background: linear-gradient(135deg, rgba(30,30,46,0.98) 70%, rgba(49,50,68,0.91) 100%);
+border: 2px solid #94e2d5;
+border-radius: 14px;
+color: #f5c2e7;
+font-size: 15px;
+font-weight: 800;
+padding: 14px 28px;
+box-shadow: 0 0 13px 1.5px #94e2d518;
+}
+#notification.critical {
+border-color: #f5c2e7;
+color: #f9e2af;
+background: linear-gradient(135deg, rgba(245,194,231,0.11) 45%, rgba(249,226,175,0.11) 100%);
+}
+#notification label {
+color: inherit;
+font-weight: 700;
+}
+/* ==== Icon PNG thủ công (image widget) ==== */
+image, #image {
+border-radius: 7px;
+margin-right: 8px;
+box-shadow: 0 0 8px 0 #94e2d521, 0 0 4px 0 #f5c2e720 inset;
+background: transparent;
+}

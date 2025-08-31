@@ -1,0 +1,239 @@
+/* ===========================================
+   Waybar Catppuccin Mocha Glass - MAX RICED 10/10 (GTK Compatible, All RGBA)
+   =========================================== */
+/* ==== RESET & FONT ==== */
+* {
+border: none; /* Xóa mọi viền mặc định của widget */
+border-radius: 12px; /* Bo góc nhẹ cho toàn bộ phần tử con của Waybar */
+min-height: 0; /* Tránh ép chiều cao tối thiểu (fix lỗi layout một số theme GTK) */
+padding: 0; /* Reset padding mặc định */
+font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", "FiraCode Nerd Font", monospace; /* Font chính có Nerd Font để hiện icon */
+font-weight: 700; /* Chữ đậm để hợp phong cách subtle */
+font-size: 13px; /* Cỡ chữ chung cho các module */
+letter-spacing: 0.03em; /* Dãn chữ nhẹ, tăng độ dễ đọc trên nền subtle */
+}
+/* ==== BAR BACKGROUND GLASSY MOCHA ==== */
+window#waybar {
+background: linear-gradient(135deg, rgba(30,30,46,0.93) 60%, rgba(49,50,68,0.91) 100%); /* Nền kính tối chuyển màu surface mocha */
+border: 2px solid rgba(148,226,213,1); /* Viền teal mocha */
+box-shadow:
+0 0 9px 1.5px rgba(148,226,213,0.23), /* Glow bên ngoài */
+0 0 24px 0 rgba(245,194,231,0.10) inset; /* Ánh pink nhẹ bên trong */
+color: rgba(205,214,244,1); /* Màu chữ text mocha cho mặc định bar */
+border-radius: 10px; /* Bo góc cho thanh bar */
+transition: background 0.45s cubic-bezier(.77,0,.18,1); /* Mượt khi đổi nền (ví dụ khi rule thay theme) */
+}
+/* ==== BAR OPACITY EFFECT ==== */
+window#waybar.fullscreen {
+opacity: 0.12; /* Khi có cửa sổ fullscreen: làm mờ bar để không gây phân tâm */
+transition: opacity 0.35s cubic-bezier(.44,1.3,.54,.9); /* Hiệu ứng mượt khi chuyển trạng thái */
+}
+window#waybar.unfocused {
+opacity: 0.55; /* Khi mất focus: giảm độ rõ của bar */
+transition: opacity 0.3s; /* Thời gian chuyển mờ rõ */
+}
+/* ==== TEXT MODULES (CENTER) ==== */
+#temperature, #cpu, #clock, #memory, #battery {
+background: transparent; /* Không nền để nổi trên nền bar */
+border: none; /* Không viền */
+box-shadow: none; /* Không đổ bóng hộp */
+border-radius: 0; /* Không bo riêng từng module chữ */
+margin: 0 2px; /* Khoảng cách ngang nhỏ giữa các module chữ */
+padding: 0 7px; /* Nội suy ngang vừa đủ để click */
+color: rgba(249,226,175,1); /* Màu yellow mocha mặc định (trung tâm) */
+text-shadow:
+0 0 3px rgba(148,226,213,0.25), /* Glow teal nhẹ */
+0 0 1px rgba(245,194,231,0.25); /* Glow pink nhẹ */
+transition: color 0.15s, text-shadow 0.15s; /* Mượt khi hover đổi màu */
+}
+#temperature:hover, #cpu:hover, #clock:hover, #memory:hover, #battery:hover {
+color: rgba(148,226,213,1); /* Hover chuyển sang teal */
+text-shadow:
+0 0 5px rgba(148,226,213,0.35), /* Tăng glow teal khi hover */
+0 0 2.5px rgba(245,194,231,0.30); /* Thêm glow pink phụ */
+}
+/* ==== BUTTON-LIKE MODULES ==== */
+/* Thêm #custom-wofi vào mọi hiệu ứng! */
+#custom-power, #custom-wofi, #network, #bluetooth, #custom-cava, #custom-mic, #power-profiles-daemon,
+#hyprland-workspaces, #pulseaudio, #backlight, #custom-media, #custom-weather, #mpd, #custom-notify {
+background: linear-gradient(135deg, rgba(49,50,68,1) 45%, rgba(49,50,68,1) 100%); /* Nền đậm như button */
+border: 2px solid rgba(148,226,213,1); /* Viền teal rõ ràng như nút */
+margin: 5px 5px; /* Khoảng cách quanh từng nút */
+padding: 5px 12px; /* Đệm trong – vùng click thoải mái */
+color: rgba(148,226,213,1); /* Chữ teal nhạt mặc định cho nhóm button */
+box-shadow:
+0 0 4px 0.5px rgba(148,226,213,0.23), /* Glow ngoài nhạt */
+0 0 0 1.5px rgba(245,194,231,0.21) inset; /* Viền pink mảnh bên trong */
+border-radius: 10px; /* Bo góc form viên kẹo */
+text-shadow: 0 0 3px rgba(148,226,213,0.2); /* Nhẹ glow chữ */
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Cảm giác “pop” khi hover */
+}
+/* ==== HOVER BUTTONS ==== */
+#custom-power:hover, #custom-wofi:hover, #network:hover, #bluetooth:hover, #custom-cava:hover, #custom-mic:hover, #power-profiles-daemon:hover,
+#hyprland-workspaces:hover, #pulseaudio:hover, #backlight:hover, #custom-media:hover, #custom-weather:hover, #mpd:hover, #custom-notify:hover {
+background: linear-gradient(135deg, rgba(245,194,231,0.11) 50%, rgba(148,226,213,0.11) 100%); /* Nền chuyển sáng khi hover */
+border-color: rgba(245,194,231,1); /* Viền chuyển pink để nổi bật */
+color: rgba(245,194,231,1); /* Chữ chuyển pink pastel */
+box-shadow:
+0 0 6px 1.2px rgba(245,194,231,0.18), /* Tăng glow pink ngoài */
+0 0 0 2px rgba(148,226,213,0.24) inset; /* Dày viền teal trong */
+text-shadow: 0 0 6px rgba(245,194,231,0.18), 0 0 2px rgba(148,226,213,0.14); /* Tăng glow chữ */
+animation: border-glow 1.3s infinite; /* Ánh sáng viền chuyển động */
+}
+/* ==== BORDER BLING ANIMATION ==== */
+@keyframes border-glow {
+  0% { box-shadow: 0 0 4px rgba(148,226,213,1), 0 0 0 1.5px rgba(245,194,231,1) inset; } /* Bắt đầu: teal ngoài, pink trong */
+  50% { box-shadow: 0 0 13px rgba(245,194,231,1), 0 0 0 3.5px rgba(148,226,213,1) inset; } /* Giữa: tăng glow pink ngoài, dày teal trong */
+  100% { box-shadow: 0 0 4px rgba(148,226,213,1), 0 0 0 1.5px rgba(245,194,231,1) inset; } /* Kết: trở về trạng thái đầu */
+}
+/* ==== OVERRIDE MODULE COLORS ==== */
+#clock, #battery, #pulseaudio, #custom-mic, #bluetooth, #cpu {
+color: rgba(249,226,175,1); /* Set lại màu yellow cho nhóm này (ghi đè) */
+text-shadow: 0 0 4px rgba(148,226,213,0.22), 0 0 1.5px rgba(245,194,231,0.17); /* Glow nhẹ để đồng bộ theme */
+}
+#power-profiles-daemon.performance { color: rgba(245,194,231,1); } /* Chế độ hiệu năng: tô pink để cảnh báo dùng pin/hiệu năng cao */
+#network, #custom-power, #custom-wofi { color: rgba(148,226,213,1); } /* Nhóm kết nối/launcher: teal dịu */
+#power-profiles-daemon, #backlight, #hyprland-workspaces { color: rgba(148,226,213,1); } /* Màu teal nhạt cho trạng thái bình thường */
+/* ==== CRITICAL/ERROR MODULE ==== */
+#network.disconnected, #pulseaudio.muted, #battery.critical {
+color: rgba(243,139,168,1); /* Red mocha cảnh báo nổi bật */
+background: rgba(49,50,68,0.51); /* Nền surface0 có alpha để vẫn “glass” */
+box-shadow: 0 0 10px rgba(243,139,168,0.66); /* Glow red mạnh để chú ý */
+border-color: rgba(243,139,168,1); /* Viền red cùng tông */
+text-shadow: 0 0 8px rgba(243,139,168,0.8); /* Glow chữ red mạnh */
+animation: none; /* Tắt animation mặc định khi đã chuyển sang style critical riêng */
+}
+/* ==== ANIMATION STATES ==== */
+#battery.critical:not(.charging),
+#network.disconnected,
+#pulseaudio.muted,
+#bluetooth.disabled {
+animation: color-flash-red 1.5s infinite; /* Nhấp nháy red khi có vấn đề nghiêm trọng */
+}
+#battery.charging, #battery.plugged {
+animation: battery-charge 1.3s infinite; /* Nhấp nháy tone “sạc” để báo đang nạp */
+}
+#pulseaudio.bluetooth {
+animation: color-flash-blue 1.3s infinite; /* Trạng thái audio qua Bluetooth: nháy blue */
+}
+@keyframes color-flash-red {
+  50% { color: rgba(245,194,231,1); text-shadow: 0 0 5px rgba(245,194,231,1), 0 0 2px rgba(249,226,175,1); } /* Pha giữa: chuyển sang pink-yellow để dễ nhìn hơn thay vì red liên tục */
+}
+@keyframes color-flash-blue {
+  50% { color: rgba(137,180,250,1); text-shadow: 0 0 6px rgba(137,180,250,1), 0 0 3px rgba(245,194,231,1); } /* Pha giữa: tăng blue/pink */
+}
+@keyframes battery-charge {
+  50% { color: rgba(148,226,213,1); text-shadow: 0 0 6px rgba(148,226,213,1), 0 0 2px rgba(249,226,175,1); } /* Pha giữa: teal + yellow gợi “đang sạc” */
+}
+/* ==== TRAY STYLE ==== */
+#tray {
+background: transparent; /* Không nền để nổi trên nền bar */
+border: none; /* Không viền */
+box-shadow: none; /* Không đổ bóng hộp */
+border-radius: 0; /* Không bo riêng module tray */
+margin: 0 2px; /* Khoảng cách ngang nhỏ giữa các module chữ */
+padding: 0 7px; /* Nội suy ngang vừa đủ để click */
+color: rgba(249,226,175,1); /* Màu yellow mocha mặc định (trung tâm) */
+text-shadow:
+0 0 3px rgba(148,226,213,0.25), /* Glow teal nhẹ */
+0 0 1px rgba(245,194,231,0.25); /* Glow pink nhẹ */
+transition: color 0.15s, text-shadow 0.15s; /* Mượt khi hover đổi màu */
+}
+#tray:hover {
+color: rgba(148,226,213,1); /* Hover chuyển sang teal */
+text-shadow:
+0 0 5px rgba(148,226,213,0.35), /* Tăng glow teal khi hover */
+0 0 2.5px rgba(245,194,231,0.30); /* Thêm glow pink phụ */
+}
+/* ==== CUSTOM MODULES (media/weather/mpd/notify) ==== */
+#custom-media, #custom-weather, #mpd, #custom-notify {
+background: linear-gradient(135deg, rgba(49,50,68,1) 60%, rgba(49,50,68,1) 100%); /* Nền tách biệt nhóm custom */
+color: rgba(205,214,244,1); /* Chữ sáng dễ đọc trên nền đậm */
+border: 1.5px;
+box-shadow: 0 0 4px rgba(148,226,213,0.27); /* Glow teal nhẹ */
+border-radius: 9px; /* Bo góc mềm hơn nhóm button chính */
+padding: 4px 12px; /* Đệm trong phù hợp nội dung dài (media/weather) */
+margin: 4px 6px; /* Khoảng cách ngang đồng đều */
+}
+#custom-media:hover, #custom-weather:hover, #mpd:hover, #custom-notify:hover {
+background: linear-gradient(135deg, rgba(245,194,231,1) 20%, rgba(148,226,213,1) 100%); /* Hover chuyển sang gradient sáng rực */
+color: rgba(49,50,68,1); /* Chữ tối để tương phản trên nền sáng */
+border-color: rgba(249,226,175,1); /* Viền yellow tạo điểm nhấn */
+animation: border-glow 1.2s infinite; /* Viền nháy khi hover */
+}
+/* ==== WORKSPACES BUTTON ==== */
+#workspaces button {
+padding: 5px 13px; /* Đệm để vùng click thoải mái */
+margin: 0 3px; /* Tách các nút workspace nhau */
+background: transparent; /* Nền trong để đồng bộ với bar */
+color: rgba(249,226,175,1); /* Màu yellow mocha mặc định */
+border: 1px solid transparent; /* Giữ layout ổn định, tránh nhảy khi đổi viền */
+border-radius: 8px; /* Bo góc nút workspace */
+box-shadow: 0 0 4px 0.7px rgba(245,194,231,0.09); /* Bóng nhẹ cho chiều sâu */
+font-weight: 800; /* Chữ đậm để rõ số/biểu tượng */
+text-shadow: 0 0 2px rgba(148,226,213,0.12); /* Glow chữ nhẹ */
+transition: all 0.15s cubic-bezier(.23,1.19,.46,1.01); /* Phản hồi hover nhanh */
+font-size: 12px; /* Cỡ chữ riêng cho workspace */
+min-width: 24px; /* Đảm bảo nút không quá nhỏ khi icon/số ít ký tự */
+}
+#workspaces button:hover {
+background: linear-gradient(135deg, rgba(245,194,231,0.10) 47%, rgba(148,226,213,0.10) 100%); /* Hover nền sáng nhẹ */
+border-color: rgba(148,226,213,1); /* Viền teal khi hover */
+color: rgba(245,194,231,1); /* Chữ pink khi hover */
+box-shadow: 0 0 3.5px 0px rgba(148,226,213,0.16); /* Tăng bóng để nổi lên */
+text-shadow: 0 0 5px rgba(245,194,231,0.13); /* Tăng glow chữ */
+}
+#workspaces button.active {
+background: linear-gradient(
+120deg,
+rgba(245,194,231,1) 0%,
+rgba(245,224,220,1) 18%,
+rgba(248,250,252,1) 35%,
+rgba(148,226,213,1) 55%,
+rgba(248,250,252,1) 75%,
+rgba(245,224,220,1) 90%,
+rgba(245,194,231,1) 100%
+  ); /* Nút active có gradient cầu vồng mocha */
+color: rgba(49,50,68,1); /* Chữ tối để tương phản trên nền sáng */
+border-color: rgba(249,226,175,1); /* Viền yellow nhấn Active */
+box-shadow:
+0 0 6px 0px rgba(148,226,213,0.26), /* Glow teal ngoài */
+0 0 0 2.3px rgba(245,194,231,0.18) inset; /* Viền pink mảnh bên trong */
+text-shadow: 0 0 4px rgba(249,226,175,0.17); /* Glow chữ yellow nhẹ */
+}
+#workspaces button.urgent { animation: color-flash-red 1.3s infinite; } /* Workspace urgent: nháy red thu hút chú ý */
+.modules-left > widget:first-child > #workspaces { margin-left: 0; } /* Bỏ lề trái cho khối workspace đầu thanh trái */
+.modules-right > widget:last-child > #workspaces { margin-right: 0; } /* Bỏ lề phải cho khối workspace cuối thanh phải */
+menu {
+border-radius: 15px; /* Bo góc menu */
+background: linear-gradient(135deg, rgba(30,30,46,0.93) 60%, rgba(49,50,68,0.91) 100%); /* Nền kính tối chuyển màu surface mocha, đồng bộ với bar */
+border: 2px solid rgba(148,226,213,1); /* Viền teal mocha */
+box-shadow:
+0 0 9px 1.5px rgba(148,226,213,0.23), /* Glow bên ngoài */
+0 0 24px 0 rgba(245,194,231,0.10) inset; /* Ánh pink nhẹ bên trong */
+color: rgba(205,214,244,1); /* Màu chữ text mocha cho mặc định menu */
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Cảm giác “pop” khi mở */
+}
+menuitem {
+border-radius: 15px; /* Bo góc item */
+background: linear-gradient(135deg, rgba(49,50,68,1) 45%, rgba(49,50,68,1) 100%); /* Nền đậm như button, đồng bộ với modules */
+border: 2px solid rgba(148,226,213,1); /* Viền teal rõ ràng */
+color: rgba(148,226,213,1); /* Chữ teal nhạt mặc định */
+box-shadow:
+0 0 4px 0.5px rgba(148,226,213,0.23), /* Glow ngoài nhạt */
+0 0 0 1.5px rgba(245,194,231,0.21) inset; /* Viền pink mảnh bên trong */
+text-shadow: 0 0 3px rgba(148,226,213,0.2); /* Nhẹ glow chữ */
+padding: 5px 12px; /* Đệm trong để dễ click */
+margin: 3px; /* Khoảng cách giữa các item */
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Phản hồi hover */
+}
+menuitem:hover {
+background: linear-gradient(135deg, rgba(245,194,231,0.11) 50%, rgba(148,226,213,0.11) 100%); /* Nền chuyển sáng khi hover */
+border-color: rgba(245,194,231,1); /* Viền chuyển pink */
+color: rgba(245,194,231,1); /* Chữ chuyển pink pastel */
+box-shadow:
+0 0 6px 1.2px rgba(245,194,231,0.18), /* Tăng glow pink ngoài */
+0 0 0 2px rgba(148,226,213,0.24) inset; /* Dày viền teal trong */
+text-shadow: 0 0 6px rgba(245,194,231,0.18), 0 0 2px rgba(148,226,213,0.14); /* Tăng glow chữ */
+animation: border-glow 1.3s infinite; /* Ánh sáng viền chuyển động */
+}

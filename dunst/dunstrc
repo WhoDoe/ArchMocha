@@ -1,0 +1,201 @@
+# ==============================
+# DUNST MAX RICE VISUAL
+# Catppuccin Mocha Glassmorphism
+# ==============================
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃ DUNST CONFIG - Cấu hình Dunst (notification daemon) để ricing max visual với theme Catppuccin Mocha (pastel dark subtle) ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+# Tài liệu chính thức: man dunst(5) hoặc https://github.com/dunst-project/dunst/wiki
+# Phần này cấu hình Dunst - daemon thông báo nhẹ, hỗ trợ Wayland/X11, với hiệu ứng card bo góc, gradient mocha, glass blur.
+# Dunst dùng syntax INI-like, với [section] cho global/urgency/rules; key=value cho tùy chỉnh.
+# Lưu ý quan trọng:
+# - Dunst chạy như daemon (exec-once ở autostart.conf); reload bằng 'killall dunst && dunst &' hoặc 'dunstctl reload'.
+# - Theme: Đồng bộ Catppuccin Mocha (dark base), pastel subtle (pink/teal/yellow) cho ricing subtle dark.
+# - Compositor: Cần Hyprland/Picom để blur/transparency/shadow (max glass effect); test bằng 'notify-send "Test" "Nội dung"'.
+# - Debug: Chạy 'dunstctl debug' để check config; 'notify-send -u critical "Title" "Body"' để test urgency.
+# - Pro Tips: Kết hợp với waybar/swaync nếu cần control center; dùng dunstify cho custom hint (progress/icon).
+[global]
+# ==== Hiển thị & Vị trí Notification (Positioning & Display) ====
+# Các tùy chọn kiểm soát vị trí, kích thước, và behavior hiển thị trên màn hình.
+# - monitor: Chỉ định màn hình (0=primary; tra bằng 'hyprctl monitors' hoặc xrandr).
+# - follow: none (fixed vị trí); mouse (theo chuột); keyboard (theo focus window).
+# - width/height: Tuple (min, max) px - tự co giãn theo nội dung (320-420 rộng cho responsive, 80-220 cao cho multi-line).
+# - origin: Vị trí gốc (top-right cho corner phổ biến; top-left/bottom-right...).
+# - offset: Khoảng cách từ mép (X,Y px; 24,54 để tránh dính sát, align với waybar nếu có).
+# - scale: 0 (auto DPI); >0 để force scale (hiDPI multi-monitor).
+# - notification_limit: Max đồng thời (10 để tránh overflow; 0=unlimited).
+monitor = 0 # Màn hình hiển thị (0: Primary; thay 1 cho secondary nếu multi-monitor)
+follow = none # Không theo chuột/focus (none: Fixed vị trí; mouse: Theo chuột; keyboard: Theo window active)
+width = (320, 420) # Rộng: Min 320px - max 420px (tự adjust theo nội dung, tránh wrap text quá)
+height = (80, 220) # Cao: Min 80px - max 220px (vừa cho text ngắn/dài, icon lớn)
+origin = top-right # Gốc: Trên phải (top-right: Corner phổ biến; thay top-center cho center top)
+offset = (24, 54) # Offset: X=24px từ phải, Y=54px từ trên (khoảng cách mép, tránh dính waybar/bar)
+scale = 0 # Scale DPI: 0 auto (tốt cho multi-monitor DPI khác; >1 cho force zoom nếu 4K)
+notification_limit = 10 # Max notifications đồng thời (10: Tránh spam; 0: Không giới hạn)
+# ==== Progress bar subtle (thanh tiến trình khi báo tiến độ) (Progress Bar) ====
+# Cấu hình progress bar (khi app gửi hint value, ví dụ dunstify -h int:value:50).
+# - progress_bar: true (bật); height (cao px); frame_width (viền, 0 cho no border).
+# - min/max_width: Rộng theo notification (200-420 để align).
+# - corner_radius/corners: Bo góc (5px all cho rounded subtle style).
+progress_bar = true # Bật progress bar (true: Hiển thị nếu app gửi progress hint)
+progress_bar_height = 10 # Cao progress bar (10px: Vừa, không lấn text)
+progress_bar_frame_width = 0 # Viền progress: 0 (no border, clean subtle fill)
+progress_bar_min_width = 200 # Rộng min (200px: Khi content ngắn, bar không quá hẹp)
+progress_bar_max_width = 420 # Rộng max (420px: Align với notification max width)
+progress_bar_corner_radius = 5 # Bo góc progress (5px: Nhẹ, max = height/2 cho pill)
+progress_bar_corners = all # Bo corners: All (full 4 góc, modern card style)
+# ==== Icon trong notification (Icon Settings) ====
+# - icon_corner_radius/corners: Bo góc icon (12px all cho soft, match card radius).
+icon_corner_radius = 12 # Bo góc icon (12px: Soft, hòa với nền; 0 cho square)
+icon_corners = all # Bo corners icon: All (full 4 góc, consistent với progress)
+# ==== Hiệu ứng nền, viền, khoảng cách (Visual Effects & Spacing) ====
+# - transparency: % mờ (10: Light transparent, cần compositor cho glass/blur).
+# - separator_height/color: Separator giữa notifications (0: No line, dùng gap_size).
+# - padding/horizontal_padding: Nội dung padding (20/18: Thoáng, text không bí).
+# - text_icon_padding: Khoảng icon-text (12: Icon lớn không dính).
+# - frame_width/color: Viền card (3px pink mocha cho outline subtle).
+# - gap_size: Khoảng giữa notifications (16px cho stack đẹp, cần blur).
+# - indicate_hidden: Yes (hiện indicator nếu > limit, như '3 more').
+transparency = 10 # Transparent: 10% (mờ nhẹ, glass effect với compositor; 0=opaque)
+separator_height = 0 # Separator height: 0 (no line, dùng gap_size cho spacing clean)
+padding = 20 # Padding vertical: 20px (trên/dưới text, thoáng)
+horizontal_padding = 18 # Padding horizontal: 18px (trái/phải, nội dung nổi)
+text_icon_padding = 12 # Padding icon-text: 12px (khoảng cách icon và body)
+frame_width = 3 # Viền width: 3px (outline bold, subtle highlight)
+frame_color = "#f5c2e7" # Viền color: Pink mocha (hồng nhạt, mocha vibe)
+gap_size = 16 # Gap giữa notifications: 16px (stack card cách nhau, max glass nếu blur)
+separator_color = frame # Separator color: Match frame (fallback nếu height>0)
+indicate_hidden = yes # Indicator hidden: Yes (hiện 'n more' nếu > limit)
+# ==== Cấu hình Font & Text (Font & Formatting) ====
+# - font: Nerd Font cho icon (JetBrainsMono 12: Mono modern, hỗ trợ Unicode icon).
+# - line_height: 0 (auto); markup: full (HTML <b><i> cho bold/italic).
+# - format: <b>%s</b>\n%b (bold summary, newline body).
+# - alignment/vertical_alignment: Left/center (text left, vertical center card).
+# - show_age_threshold: 60s (hiện age nếu >60s, như '5m ago').
+# - ellipsize: Middle (cắt giữa text dài, giữ đầu/cuối).
+# - ignore_newline: No (giữ newline từ app).
+# - stack_duplicates/hide_duplicate_count: True/false (gộp duplicate, hiện count).
+# - show_indicators: Yes (hiện action/link indicator).
+font = JetBrainsMono Nerd Font 12 # Font: JetBrainsMono Nerd (12pt, mono+icon; cài Nerd Fonts trước)
+line_height = 0 # Line height: 0 (auto, dãn tự nhiên)
+markup = full # Markup: Full (hỗ trợ HTML bold/italic/underline/strikethrough)
+format = "<b>%s</b>\n%b" # Format: Bold summary (%s), newline body (%b); thay %a cho appname nếu cần
+alignment = left # Align text: Left (căn trái, readable)
+vertical_alignment = center # Vertical align: Center (icon+text giữa card)
+show_age_threshold = 60 # Age threshold: 60s (hiện time nếu >60s, tránh miss old notify)
+ellipsize = middle # Ellipsize: Middle (cắt giữa text dài, giữ đầu+cuối như 'long...text')
+ignore_newline = no # Ignore newline: No (giữ xuống dòng từ app, layout gốc)
+stack_duplicates = true # Stack duplicates: True (gộp notify giống, tránh spam)
+hide_duplicate_count = false # Hide count: False (hiện [n] nếu gộp, như [3] downloads)
+show_indicators = yes # Indicators: Yes (hiện ký hiệu nếu có action/link)
+# ==== Cấu hình Icon (Icon Theme & Path) ====
+# - enable_recursive_icon_lookup: True (tìm icon recursive qua themes).
+# - icon_theme: List fallback (Catppuccin-Mocha primary, Papirus/Adwaita fallback).
+# - icon_position: Left (bên trái text, standard).
+# - min/max_icon_size: 36-80 (scale icon nhỏ lên, cap lớn để fit).
+# - icon_path: Folders thủ công (status/devices, multiple : separated).
+enable_recursive_icon_lookup = true # Recursive lookup: True (tìm sâu icon themes)
+icon_theme = "Catppuccin-Mocha,Catppuccin-Papirus-Dark,Adwaita,Papirus-Dark" # Themes: Catppuccin primary (mocha), fallback Papirus/Adwaita (đồng bộ system)
+icon_position = left # Position: Left (icon trái text, clean layout)
+min_icon_size = 36 # Min size: 36px (scale up small icons từ app)
+max_icon_size = 80 # Max size: 80px (cap large icons, tránh overflow)
+icon_path = /usr/share/icons/Catppuccin-Mocha/48x48/status/:/usr/share/icons/Papirus-Dark/48x48/status/:/usr/share/icons/Papirus-Dark/48x48/devices/:/usr/share/icons/Adwaita/48x48/status/ # Paths: Folders icon thủ công (status/devices, : separated; thêm custom nếu cần)
+# ==== Lịch sử notification, menu context (History & Actions) ====
+# - sticky_history: Yes (dunstctl history-pop để recall old notify).
+# - history_length: 18 (max lưu, balance memory).
+# - dmenu: Wofi dmenu cho select action (thay rofi nếu dùng).
+# - browser: xdg-open (mở link default browser).
+# - always_run_script: True (run script rules always).
+sticky_history = yes # Sticky history: Yes (giữ history, recall bằng dunstctl)
+history_length = 18 # History length: 18 (max old notifies lưu)
+dmenu = wofi --show dmenu -p "Dunst:" # Dmenu: Wofi cho action menu (prompt 'Dunst:', thay rofi/fuzzel)
+browser = xdg-open # Browser: xdg-open (mở link default, như Firefox)
+always_run_script = true # Run script: True (exec script từ rules always)
+# ==== Thuộc tính cửa sổ notification (Window Properties) ====
+# - title/class: Dunst (cho window rules ở compositor, như nofocus/float).
+# - corner_radius/corners: 17 all (bo card, match icon/progress).
+# - ignore_dbusclose: False (app có thể close via dbus).
+title = Dunst # Title: Dunst (X11 window title)
+class = Dunst # Class: Dunst (X11 window class, cho rules)
+corner_radius = 17 # Radius: 17px (bo card, soft subtle; match compositor round)
+corners = all # Corners: All (bo full 4 góc)
+ignore_dbusclose = false # Ignore dbus close: False (cho app close notify via dbus)
+# ==== Cấu hình chuột (mouse) (Mouse Actions) ====
+# - mouse_left_click: Close current (tắt notify click).
+# - middle: Do action + close (exec action nếu có).
+# - right: Close all (clear stack).
+mouse_left_click = close_current # Left: Close current notify
+mouse_middle_click = do_action, close_current # Middle: Action + close (reply/open nếu app hỗ trợ)
+mouse_right_click = close_all # Right: Close all notifies
+# ==== Experimental (Advanced/Testing) ====
+# - per_monitor_dpi: False (không force DPI per-monitor, auto tốt hơn).
+    [experimental]
+per_monitor_dpi = false # Per DPI: False (auto handle, true nếu multi-DPI issues)
+# ====== PHỐI MÀU THEO URGENCY (Đồng bộ Catppuccin Mocha) (Urgency Levels) ======
+# Block urgency: Màu theo mức độ (low/normal/critical), override global.
+# - background/foreground/frame_color: Theme colors (dark base, pastel text, subtle frame).
+# - timeout: Thời gian auto close (10s normal, 0 critical=manual).
+# - override_pause_level: Pause level (higher=important, affect sort).
+# - default_icon: Fallback icon nếu app no icon.
+[urgency_low]
+background = "#313244" # BG: Surface0 mocha (dark soft)
+foreground = "#cdd6f4" # FG: Text mocha (high contrast)
+frame_color = "#94e2d5" # Frame: Teal mocha (subtle edge)
+timeout = 10 # Timeout: 10s (auto close)
+override_pause_level = 30 # Pause: 30 (low priority)
+default_icon = dialog-information # Icon: Info (fallback)
+[urgency_normal]
+background = "#1e1e2e" # BG: Base mocha (dark base)
+foreground = "#cdd6f4" # FG: Text mocha (readable)
+frame_color = "#f5c2e7" # Frame: Pink mocha (match FG, soft subtle)
+timeout = 10 # 10s
+override_pause_level = 30 # Normal priority
+default_icon = dialog-information # Info icon
+[urgency_critical]
+background = "#45475a" # BG: Surface1 mocha (darker warning base)
+foreground = "#f9e2af" # FG: Yellow mocha (alert)
+frame_color = "#f38ba8" # Frame: Red mocha (standout on blur)
+timeout = 0 # 0: No auto close (manual only)
+override_pause_level = 60 # High priority (top sort)
+default_icon = dialog-warning # Warning icon
+# ====== RULE TUỲ BIẾN THEO APP, SIÊU RICE (App-Specific Rules) ======
+# Block [] cho per-app rules (match appname/summary, override colors/icon/timeout).
+# - appname: Tên app (tra bằng 'notify-send -a appname').
+# - summary: Match text summary (regex-like * cho wildcard).
+# - urgency: Force level (critical cho important).
+# Gợi ý: Thêm rule cho app thường notify (Discord/Telegram để theme match, download/battery để alert).
+# Discord: Mauve mocha riêng (subtle vibe).
+#[discord]
+# appname = "discord"
+# background = "#313244" # Surface0 dark
+# foreground = "#cdd6f4" # Text
+# frame_color = "#cba6f7" # Mauve frame
+# icon_position = left # Keep left
+# Firefox download: Green mocha khi complete (success vibe).
+[firefox-download]
+appname = "firefox"
+summary = "*Hoàn tất*" # Match "*Hoàn tất*" in summary
+background = "#a6e3a1" # Green mocha (success)
+foreground = "#1e1e2e" # Base dark text
+frame_color = "#94e2d5" # Teal mocha frame
+timeout = 15 # Longer 15s
+# Battery warning: Red mocha critical (alert high).
+[battery-critical]
+summary = "*pin yếu*" # Match "*pin yếu*" (battery low)
+urgency = critical # Force critical
+background = "#f38ba8" # Red mocha
+foreground = "#1e1e2e" # Base dark
+frame_color = "#fab387" # Peach mocha
+timeout = 0 # No close
+# --- Gợi ý rice (Additional Rules & Tips) ---
+# ▸ Thêm rule: Copy [app] block, match appname/summary cho custom (Telegram blue, Slack mauve...).
+# ▸ Icon per-rule: default_icon = custom-icon (dùng Nerd/Papirus icons).
+# ▸ Test rule: notify-send -a appname "Summary" "Body" -u level (check match).
+# ▸ Compositor enhance: Trong Hyprland windows.conf, windowrulev2 = opacity 0.96, class:dunst cho glass.
+# ▸ Pro Tips - Siêu Rice:
+# - Gradient frame: Dunst no built-in gradient, nhưng phối urgency colors cho variant subtle.
+# - Script action: always_run_script + rule để exec bash on notify (ví dụ: play sound on critical).
+# - History menu: Bind key exec = dunstctl history để popup old notifies.
+# - Optimize: Giữ rules minimal (dưới 10) để fast; sort=yes + idle_threshold=0 cho clean workflow.
+# - Nhớ: Dunst là notify ricing - tune để visual "feel glass" (subtle, responsive, non-intrusive)!
+# vim: ft=cfg

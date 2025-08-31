@@ -1,0 +1,98 @@
+# =======================================
+# WOFI MAX RICE VISUAL
+# Sakura Neon Catppuccin
+# =======================================
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃ WOFI CONFIG - Cấu hình Wofi (Wayland launcher) để ricing max visual với theme Sakura Neon Catppuccin (pastel neon) ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+# Tài liệu chính thức: man wofi(5) hoặc https://hg.sr.ht/~scoopta/wofi
+# Phần này cấu hình Wofi - launcher nhẹ cho Wayland (tương tự Rofi), hỗ trợ drun/run/dmenu, với hiệu ứng glass, fuzzy search, image icons.
+# Wofi dùng syntax INI-like (key=value), với # cho comment; reload bằng restart Wofi (pkill wofi && wofi).
+# Lưu ý quan trọng:
+# - Wofi chạy on-demand (bind ở keybinds.conf: SUPER+R exec wofi --show drun); config ở ~/.config/wofi/config.
+# - Theme: Đồng bộ Catppuccin (dark base), Sakura Neon (pastel colors) - style ở style.css (gradient/blur/glow).
+# - Modes: drun (app desktop), run (command), ssh (remote), dmenu (stdin pipe).
+# - Debug: wofi --show drun --config config để test; check log nếu error (wofi -d).
+# - Pro Tips: Kết hợp với waybar custom/wofi module để launch button; dùng --allow-images cho app icons (requires GTK3+).
+
+# ==== MODE & SEARCH (Chế độ & Tìm kiếm) ====
+# Các tùy chọn chính cho mode (drun default), search insensitive/fuzzy, markup/images.
+# - mode: drun (app launcher; run: command, dmenu: pipe).
+# - insensitive: true (không phân biệt hoa/thường khi search).
+# - allow_markup: true (hỗ trợ Pango markup cho rich text/icons in entries).
+# - allow_images: true (hiển thị app icons từ desktop files).
+# - dynamic_lines: true (auto adjust lines theo results).
+mode=drun # Mode mặc định: drun (app launcher; thay run cho command, dmenu cho pipe input)
+insensitive=true # Search insensitive: true (không phân biệt hoa/thường, user-friendly)
+allow_markup=true # Markup: true (Pango rich text cho entries, như bold/color/icons)
+# Cửa sổ / Hiển thị (Window & Display)
+# Các tùy chọn kích thước/vị trí/layer, hide scroll.
+# - width/height: px (670x360: vừa cho FHD, responsive).
+# - xoffset/yoffset: px từ góc (2,2: light offset từ top-left).
+# - layer: overlay (luôn trên, không bị che; top/bottom/normal).
+# - hide_scroll: true (ẩn thanh cuộn, clean UI).
+width=670 # Rộng: 670px (vừa cho menu app, icons+text)
+height=360 # Cao: 360px (enough lines, không overflow)
+xoffset=2 # Offset X: 2px từ trái (light margin)
+yoffset=2 # Offset Y: 2px từ trên (avoid top edge)
+layer=overlay # Layer: overlay (luôn trên window, như menu)
+hide_scroll=true # Hide scroll: true (ẩn thanh cuộn, scroll invisible)
+
+# Giao diện tối ưu (nên để đúng tên option Wofi) (UI Optimization)
+# Các tùy chọn images/dynamic lines, no_actions/sort/gtk_dark.
+# - allow_images: true (app icons, rich visual).
+# - dynamic_lines: true (adjust height theo results).
+# - no_actions: false (cho phép actions nếu entry có, như open/run).
+# - sort_order: default (alphabetical; time cho recent).
+# - gtk_dark: true (dark theme GTK, match Catppuccin).
+allow_images=true # Images: true (hiển thị icons app, ricing visual)
+dynamic_lines=true # Dynamic lines: true (auto adjust rows theo results, no fixed height)
+# Hành vi (Behavior)
+# Các tùy chọn actions/sort/dark mode.
+# - no_actions: false (enable actions from desktop files).
+# - sort_order: default (standard sort).
+# - gtk_dark: true (force dark variant cho theme).
+no_actions=false # No actions: false (cho phép actions nếu có, như open with...)
+sort_order=default # Sort: default (alphabetical; time cho recent-first)
+gtk_dark=true # GTK dark: true (dark mode, match system theme)
+
+# Tìm kiếm (Search Options)
+# Các tùy chọn matching/cycle.
+# - matching: fuzzy (semantic fuzzy search, smart).
+# - cycle: true (cuộn vòng results, up/down loop).
+matching=fuzzy # Matching: fuzzy (semantic search, smart match)
+cycle=true # Cycle: true (cuộn vòng lên/xuống, loop results)
+
+# Giao diện phụ (mô tả) (Extra UI)
+# Các tùy chọn show (multi-mode), key bindings.
+# - show: drun,run,ssh (comma separated cho multi-mode; default single).
+# - key_up/down/accept/exit/delete: Custom bindings (Up/Down/Return/Escape/Delete).
+show=drun,run,ssh # Show: drun,run,ssh (multi-mode: apps/commands/remote; thay single nếu cần)
+# Shortcut (Key Bindings)
+# Các phím tắt mặc định/custom (Up/Down cho nav, Return accept...).
+key_up=Up # Up: Nav up
+key_down=Down # Down: Nav down
+key_accept=Return # Accept: Return (select entry)
+key_exit=Escape # Exit: Escape (close wofi)
+key_delete=Delete # Delete: Backspace/delete char
+
+# Các option nâng cao sau cần check bản Wofi: (Advanced Options)
+# Uncomment nếu Wofi version hỗ trợ (border_radius/use_blur từ recent builds).
+# - border_radius: 20 (bo góc window, match CSS round).
+# - use_blur: true (blur background, max glass với Hyprland compositor).
+# border_radius=20 # Radius: 20px (bo window, pill style; check Wofi version)
+use_blur=true # Blur: true (background blur, glassy; requires compositor support)
+
+# ==============================
+# GỢI Ý TỐI ƯU & TIP NHANH (Optimization Tips)
+# ==============================
+# ▸ Theme sync: Sử dụng style.css cho colors (Catppuccin: dark base, neon border/glow).
+# ▸ Multi-mode: show=drun,run để switch mode (Ctrl+Tab default? Check man).
+# ▸ Custom key: Thêm key_custom1=Ctrl+R exec custom action (script bind).
+# ▸ Debug: wofi -d --show drun để log debug (check matching/sort issues).
+# ▸ Pro Tips - Siêu Rice:
+#   - Image size: allow_images=true + CSS img { width: 48px; } cho icon large.
+#   - Fuzzy advanced: matching=fuzzy (smart search, typo tolerant).
+#   - Blur enhance: Trong Hyprland layerrule = blur, wofi để max glass.
+#   - Optimize: insensitive=true + cycle=true cho UX fast (search easy, nav loop).
+#   - Nhớ: Wofi là launcher ricing - tune để "feel glass" (neon, fuzzy, instant apps)!
