@@ -13,6 +13,7 @@
     "custom/power", // Module tùy chỉnh: nút Power
     "custom/wofi", // Module tùy chỉnh: launcher ứng dụng Wofi
     "network", // Module: trạng thái mạng (Wi-Fi/Ethernet)
+    "bluetooth", // Module: Bluetooth
     "power-profiles-daemon", // Module: chế độ nguồn (balanced/performance/saver)
     "hyprland/workspaces" // Module: workspaces của Hyprland
   ],
@@ -25,7 +26,6 @@
   ],
   "modules-right": [ // Các module bên phải thanh
     "custom/cava", // Module tùy chỉnh: visualizer âm thanh CAVA
-    "bluetooth", // Module: Bluetooth
     "pulseaudio", // Module: âm lượng (PulseAudio/PipeWire)
     "backlight" // Module: độ sáng màn hình
   ],
@@ -61,6 +61,14 @@
     "format-icons": [ "󰤯", "󰤟", "󰤢", "󰤥", "󰤨" ], // Các icon theo cường độ tín hiệu Wi-Fi
     "on-click": "kitty --class float-nmtui --name nmtui sh -lc 'nmtui'", // Click trái: mở nmtui trong terminal kitty
     "on-click-right": "sh -c 'if nmcli radio wifi | grep -q enabled; then nmcli radio wifi off && notify-send \"Đã tắt Wi-Fi\"; else nmcli radio wifi on && notify-send \"Đã bật Wi-Fi\"; fi'" // Click phải: toggle Wi-Fi on/off
+  },
+  "bluetooth": { // Cấu hình module: Bluetooth
+    "tooltip": true, // Bật tooltip
+    "tooltip-format": "[Bluetooth]", // Nội dung tooltip: "[Bluetooth]"
+    "format": "[ 󰂯 ]", // Định dạng khi bật: icon bật
+    "format-disabled": "[ 󰂲 ]", // Định dạng khi tắt: icon tắt
+    "on-click": "blueman-manager", // Click trái: mở blueman-manager
+    "on-click-right": "rfkill toggle bluetooth" // Click phải: toggle Bluetooth
   },
   "power-profiles-daemon": { // Cấu hình module: chế độ nguồn
     "format": "[ {icon} ]", // Định dạng: icon theo profile với ngoặc vuông
@@ -138,14 +146,6 @@
     "interval": 0, // Cập nhật realtime (0 = liên tục)
     "on-click": "kitty --hold cava & kitty --hold unimatrix -a -b -c cyan -f -i -l k -s 95", // Click trái: mở cava và unimatrix trong 2 kitty riêng
     "on-click-right": "firefox --new-window https://www.youtube.com/playlist?list=LL" // Click phải: mở playlist "Liked videos" trong window mới
-  },
-  "bluetooth": { // Cấu hình module: Bluetooth
-    "tooltip": true, // Bật tooltip
-    "tooltip-format": "[Bluetooth]", // Nội dung tooltip: "[Bluetooth]"
-    "format": "[ 󰂯 ]", // Định dạng khi bật: icon bật
-    "format-disabled": "[ 󰂲 ]", // Định dạng khi tắt: icon tắt
-    "on-click": "blueman-manager", // Click trái: mở blueman-manager
-    "on-click-right": "rfkill toggle bluetooth" // Click phải: toggle Bluetooth
   },
   "pulseaudio": { // Cấu hình module: âm lượng
     "scroll-step": 10, // Bước cuộn: ±10%
