@@ -10,7 +10,7 @@
 # Dunst dùng syntax INI-like, với [section] cho global/urgency/rules; key=value cho tùy chỉnh.
 # Lưu ý quan trọng:
 # - Dunst chạy như daemon (exec-once ở autostart.conf); reload bằng 'killall dunst && dunst &' hoặc 'dunstctl reload'.
-# - Theme: Đồng bộ Catppuccin Mocha (dark base), pastel subtle (pink/teal/yellow) cho ricing subtle dark.
+# - Theme: Đồng bộ Catppuccin Mocha (dark base), ưu tiên nhiều màu sáng subtle (lavender/sky/mauve/pink/teal/green/yellow/peach) cho ricing vibrant hơn.
 # - Compositor: Cần Hyprland/Picom để blur/transparency/shadow (max glass effect); test bằng 'notify-send "Test" "Nội dung"'.
 # - Debug: Chạy 'dunstctl debug' để check config; 'notify-send -u critical "Title" "Body"' để test urgency.
 # - Pro Tips: Kết hợp với waybar/swaync nếu cần control center; dùng dunstify cho custom hint (progress/icon).
@@ -53,7 +53,7 @@ icon_corners = all # Bo corners icon: All (full 4 góc, consistent với progres
 # - separator_height/color: Separator giữa notifications (0: No line, dùng gap_size).
 # - padding/horizontal_padding: Nội dung padding (20/18: Thoáng, text không bí).
 # - text_icon_padding: Khoảng icon-text (12: Icon lớn không dính).
-# - frame_width/color: Viền card (3px pink mocha cho outline subtle).
+# - frame_width/color: Viền card (3px lavender cho outline sáng, multi-color qua urgency).
 # - gap_size: Khoảng giữa notifications (16px cho stack đẹp, cần blur).
 # - indicate_hidden: Yes (hiện indicator nếu > limit, như '3 more').
 transparency = 10 # Transparent: 10% (mờ nhẹ, glass effect với compositor; 0=opaque)
@@ -62,7 +62,7 @@ padding = 20 # Padding vertical: 20px (trên/dưới text, thoáng)
 horizontal_padding = 18 # Padding horizontal: 18px (trái/phải, nội dung nổi)
 text_icon_padding = 12 # Padding icon-text: 12px (khoảng cách icon và body)
 frame_width = 3 # Viền width: 3px (outline bold, subtle highlight)
-frame_color = "#f5c2e7" # Viền color: Pink mocha (hồng nhạt, mocha vibe)
+frame_color = "#b4befe" # Viền color: Lavender mocha (tím nhạt sáng, ưu tiên bright)
 gap_size = 16 # Gap giữa notifications: 16px (stack card cách nhau, max glass nếu blur)
 separator_color = frame # Separator color: Match frame (fallback nếu height>0)
 indicate_hidden = yes # Indicator hidden: Yes (hiện 'n more' nếu > limit)
@@ -78,7 +78,7 @@ indicate_hidden = yes # Indicator hidden: Yes (hiện 'n more' nếu > limit)
 # - show_indicators: Yes (hiện action/link indicator).
 font = JetBrainsMono Nerd Font 12 # Font: JetBrainsMono Nerd (12pt, mono+icon; cài Nerd Fonts trước)
 line_height = 0 # Line height: 0 (auto, dãn tự nhiên)
-markup = full # Markup: Full (hỗ trợ HTML bold/italic/underline/strikethrough)
+markup = full # Markup: Full (Full hỗ trợ HTML bold/italic/underline/strikethrough)
 format = "<b>%s</b>\n%b" # Format: Bold summary (%s), newline body (%b); thay %a cho appname nếu cần
 alignment = left # Align text: Left (căn trái, readable)
 vertical_alignment = center # Vertical align: Center (icon+text giữa card)
@@ -131,71 +131,93 @@ mouse_right_click = close_all # Right: Close all notifies
 # - per_monitor_dpi: False (không force DPI per-monitor, auto tốt hơn).
     [experimental]
 per_monitor_dpi = false # Per DPI: False (auto handle, true nếu multi-DPI issues)
-# ====== PHỐI MÀU THEO URGENCY (Đồng bộ Catppuccin Mocha) (Urgency Levels) ======
-# Block urgency: Màu theo mức độ (low/normal/critical), override global.
-# - background/foreground/frame_color: Theme colors (dark base, pastel text, subtle frame).
+# ====== PHỐI MÀU THEO URGENCY (Đồng bộ Catppuccin Mocha, ưu tiên nhiều màu sáng) (Urgency Levels) ======
+# Block urgency: Màu theo mức độ (low/normal/critical), override global, dùng nhiều màu sáng hơn cho vibrant (green/sky/red variant).
+# - background/foreground/frame_color: Theme colors sáng (dark base nền, bright text/frame cho pop).
 # - timeout: Thời gian auto close (10s normal, 0 critical=manual).
 # - override_pause_level: Pause level (higher=important, affect sort).
 # - default_icon: Fallback icon nếu app no icon.
 [urgency_low]
 background = "#313244" # BG: Surface0 mocha (dark soft)
-foreground = "#cdd6f4" # FG: Text mocha (high contrast)
-frame_color = "#94e2d5" # Frame: Teal mocha (subtle edge)
+foreground = "#a6e3a1" # FG: Green mocha sáng (calm eco)
+frame_color = "#94e2d5" # Frame: Teal mocha sáng (subtle edge)
 timeout = 10 # Timeout: 10s (auto close)
 override_pause_level = 30 # Pause: 30 (low priority)
 default_icon = dialog-information # Icon: Info (fallback)
 [urgency_normal]
 background = "#1e1e2e" # BG: Base mocha (dark base)
-foreground = "#cdd6f4" # FG: Text mocha (readable)
-frame_color = "#f5c2e7" # Frame: Pink mocha (match FG, soft subtle)
+foreground = "#89dceb" # FG: Sky mocha sáng (mát mẻ info)
+frame_color = "#b4befe" # Frame: Lavender mocha sáng (bright subtle)
 timeout = 10 # 10s
 override_pause_level = 30 # Normal priority
 default_icon = dialog-information # Info icon
 [urgency_critical]
 background = "#45475a" # BG: Surface1 mocha (darker warning base)
-foreground = "#f9e2af" # FG: Yellow mocha (alert)
-frame_color = "#f38ba8" # Frame: Red mocha (standout on blur)
+foreground = "#fab387" # FG: Peach mocha sáng (alert ấm)
+frame_color = "#f38ba8" # Frame: Red mocha sáng (standout on blur)
 timeout = 0 # 0: No auto close (manual only)
 override_pause_level = 60 # High priority (top sort)
 default_icon = dialog-warning # Warning icon
 # ====== RULE TUỲ BIẾN THEO APP, SIÊU RICE (App-Specific Rules) ======
-# Block [] cho per-app rules (match appname/summary, override colors/icon/timeout).
-# - appname: Tên app (tra bằng 'notify-send -a appname').
+# Block [] cho per-app rules (match appname/summary, override colors/icon/timeout), dùng nhiều màu sáng cho đa dạng.
+# - appname: Tên app (regex, tra bằng 'notify-send -a appname').
 # - summary: Match text summary (regex-like * cho wildcard).
 # - urgency: Force level (critical cho important).
-# Gợi ý: Thêm rule cho app thường notify (Discord/Telegram để theme match, download/battery để alert).
-# Discord: Mauve mocha riêng (subtle vibe).
-#[discord]
-# appname = "discord"
-# background = "#313244" # Surface0 dark
-# foreground = "#cdd6f4" # Text
-# frame_color = "#cba6f7" # Mauve frame
-# icon_position = left # Keep left
-# Firefox download: Green mocha khi complete (success vibe).
+# Gợi ý: Thêm rule cho app thường notify (Discord mauve, Telegram sapphire, download green, battery red... để theme vibrant).
+# Discord: Mauve mocha sáng (tím sáng cho chat vibe).
+[discord]
+appname = "discord"
+background = "#313244" # Surface0 dark
+foreground = "#cba6f7" # Mauve sáng
+frame_color = "#f5c2e7" # Pink frame sáng
+icon_position = left # Keep left
+# Firefox download: Green mocha sáng khi complete (success vibe).
 [firefox-download]
 appname = "firefox"
 summary = "*Hoàn tất*" # Match "*Hoàn tất*" in summary
-background = "#a6e3a1" # Green mocha (success)
+background = "#a6e3a1" # Green mocha sáng (success)
 foreground = "#1e1e2e" # Base dark text
-frame_color = "#94e2d5" # Teal mocha frame
+frame_color = "#94e2d5" # Teal frame sáng
 timeout = 15 # Longer 15s
-# Battery warning: Red mocha critical (alert high).
+# Battery warning: Red mocha sáng critical (alert high).
 [battery-critical]
 summary = "*pin yếu*" # Match "*pin yếu*" (battery low)
 urgency = critical # Force critical
-background = "#f38ba8" # Red mocha
+background = "#f38ba8" # Red mocha sáng
 foreground = "#1e1e2e" # Base dark
-frame_color = "#fab387" # Peach mocha
+frame_color = "#fab387" # Peach frame sáng
 timeout = 0 # No close
+# Telegram: Sapphire mocha sáng (xanh dương cho message vibe).
+[telegram]
+appname = "telegram-desktop"
+background = "#181825" # Mantle dark
+foreground = "#74c7ec" # Sapphire sáng
+frame_color = "#89dceb" # Sky frame sáng
+timeout = 8 # Short 8s
+# Slack/Email: Lavender mocha sáng (tím nhạt cho work vibe).
+[slack-email]
+appname = "slack"
+summary = "*email*" # Match "*email*"
+background = "#45475a" # Surface1 dark
+foreground = "#b4befe" # Lavender sáng
+frame_color = "#f2cdcd" # Flamingo frame sáng
+urgency = normal # Normal
+# Volume change: Teal mocha sáng (xanh ngọc cho audio vibe).
+[volume]
+summary = "*volume*" # Match volume changes
+background = "#313244" # Surface0
+foreground = "#94e2d5" # Teal sáng
+frame_color = "#a6e3a1" # Green frame sáng
+timeout = 3 # Quick 3s
 # --- Gợi ý rice (Additional Rules & Tips) ---
-# ▸ Thêm rule: Copy [app] block, match appname/summary cho custom (Telegram blue, Slack mauve...).
-# ▸ Icon per-rule: default_icon = custom-icon (dùng Nerd/Papirus icons).
+# ▸ Thêm rule: Copy [app] block, match appname/summary cho custom (Spotify yellow, Browser peach... dùng nhiều màu sáng như sky/mauve/green).
+# ▸ Icon per-rule: default_icon = custom-icon (dùng Nerd/Papirus icons, chọn bright variants).
 # ▸ Test rule: notify-send -a appname "Summary" "Body" -u level (check match).
-# ▸ Compositor enhance: Trong Hyprland windows.conf, windowrulev2 = opacity 0.96, class:dunst cho glass.
+# ▸ Compositor enhance: Trong Hyprland windows.conf, windowrulev2 = opacity 0.93, class:dunst cho glass; shadow=true cho glow multi-color.
 # ▸ Pro Tips - Siêu Rice:
-# - Gradient frame: Dunst no built-in gradient, nhưng phối urgency colors cho variant subtle.
-# - Script action: always_run_script + rule để exec bash on notify (ví dụ: play sound on critical).
+# - Gradient sim: Dunst no native gradient, nhưng phối urgency/rules với bright colors variant (lavender frame low, sky normal, peach critical) cho feel multi-color.
+# - Script action: always_run_script + rule để exec bash on notify (ví dụ: play sound on critical với mauve tint notify).
 # - History menu: Bind key exec = dunstctl history để popup old notifies.
 # - Optimize: Giữ rules minimal (dưới 10) để fast; sort=yes + idle_threshold=0 cho clean workflow.
-# - Nhớ: Dunst là notify ricing - tune để visual "feel glass" (subtle, responsive, non-intrusive)!
+# - Nhớ: Dunst là notify ricing - tune để visual "feel glass" (subtle, responsive, non-intrusive, multi-bright pop)!
 # vim: ft=cfg

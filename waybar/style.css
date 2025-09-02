@@ -14,11 +14,12 @@ letter-spacing: 0.03em; /* Dãn chữ nhẹ, tăng độ dễ đọc trên nền
 }
 /* ==== BAR BACKGROUND GLASSY MOCHA ==== */
 window#waybar {
-background: linear-gradient(135deg, rgba(30,30,46,0.93) 60%, rgba(49,50,68,0.91) 100%); /* Nền kính tối chuyển màu surface mocha */
-border: 2px solid rgba(148,226,213,1); /* Viền teal mocha */
+background: linear-gradient(135deg, rgba(30,30,46,0.93) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.93) 100%); /* Nền kính tối chuyển màu surface mocha, thêm layer cho chiều sâu */
+border: 2px solid rgba(148,226,213,1); /* Viền teal mocha chính */
 box-shadow:
-0 0 9px 1.5px rgba(148,226,213,0.23), /* Glow bên ngoài */
-0 0 24px 0 rgba(245,194,231,0.10) inset; /* Ánh pink nhẹ bên trong */
+0 0 9px 1.5px rgba(148,226,213,0.23), /* Glow teal bên ngoài */
+0 0 12px 0.5px rgba(245,194,231,0.18), /* Thêm glow pink phụ */
+0 0 18px 0 rgba(249,226,175,0.12) inset; /* Ánh yellow nhẹ bên trong cho sáng hơn */
 color: rgba(205,214,244,1); /* Màu chữ text mocha cho mặc định bar */
 border-radius: 10px; /* Bo góc cho thanh bar */
 transition: background 0.45s cubic-bezier(.77,0,.18,1); /* Mượt khi đổi nền (ví dụ khi rule thay theme) */
@@ -40,27 +41,32 @@ box-shadow: none; /* Không đổ bóng hộp */
 border-radius: 0; /* Không bo riêng từng module chữ */
 margin: 0 2px; /* Khoảng cách ngang nhỏ giữa các module chữ */
 padding: 0 7px; /* Nội suy ngang vừa đủ để click */
-color: rgba(249,226,175,1); /* Màu yellow mocha mặc định (trung tâm) */
 text-shadow:
 0 0 3px rgba(148,226,213,0.25), /* Glow teal nhẹ */
 0 0 1px rgba(245,194,231,0.25); /* Glow pink nhẹ */
 transition: color 0.15s, text-shadow 0.15s; /* Mượt khi hover đổi màu */
 }
+/* Màu riêng cho từng module text để đa dạng hơn */
+#temperature { color: rgba(250,179,135,1); } /* Peach cho nhiệt độ (gợi ấm) */
+#cpu { color: rgba(203,166,247,1); } /* Mauve cho CPU (gợi tính toán phức tạp) */
+#clock { color: rgba(180,190,254,1); } /* Lavender cho đồng hồ (gợi thời gian dịu dàng) */
+#memory { color: rgba(137,180,250,1); } /* Blue cho memory (gợi lưu trữ) */
+#battery { color: rgba(166,227,161,1); } /* Green cho battery (gợi năng lượng) */
+
 #temperature:hover, #cpu:hover, #clock:hover, #memory:hover, #battery:hover {
-color: rgba(148,226,213,1); /* Hover chuyển sang teal */
+color: rgba(245,194,231,1); /* Hover thống nhất sang pink sáng cho nổi bật */
 text-shadow:
-0 0 5px rgba(148,226,213,0.35), /* Tăng glow teal khi hover */
-0 0 2.5px rgba(245,194,231,0.30); /* Thêm glow pink phụ */
+0 0 5px rgba(245,194,231,0.35), /* Tăng glow pink khi hover */
+0 0 2.5px rgba(148,226,213,0.30); /* Thêm glow teal phụ */
 }
 /* ==== BUTTON-LIKE MODULES ==== */
 /* Thêm #custom-wofi vào mọi hiệu ứng! */
 #custom-power, #custom-wofi, #network, #bluetooth, #custom-cava, #custom-mic, #power-profiles-daemon,
 #hyprland-workspaces, #pulseaudio, #backlight, #custom-media, #custom-weather, #mpd, #custom-notify {
-background: linear-gradient(135deg, rgba(49,50,68,1) 45%, rgba(49,50,68,1) 100%); /* Nền đậm như button */
+background: linear-gradient(135deg, rgba(49,50,68,1) 30%, rgba(49,50,68,0.9) 60%, rgba(49,50,68,1) 100%); /* Nền đậm như button, thêm subtle gradient */
 border: 2px solid rgba(148,226,213,1); /* Viền teal rõ ràng như nút */
 margin: 5px 5px; /* Khoảng cách quanh từng nút */
 padding: 5px 12px; /* Đệm trong – vùng click thoải mái */
-color: rgba(148,226,213,1); /* Chữ teal nhạt mặc định cho nhóm button */
 box-shadow:
 0 0 4px 0.5px rgba(148,226,213,0.23), /* Glow ngoài nhạt */
 0 0 0 1.5px rgba(245,194,231,0.21) inset; /* Viền pink mảnh bên trong */
@@ -68,32 +74,48 @@ border-radius: 10px; /* Bo góc form viên kẹo */
 text-shadow: 0 0 3px rgba(148,226,213,0.2); /* Nhẹ glow chữ */
 transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Cảm giác “pop” khi hover */
 }
+/* Màu riêng cho từng button module để dùng nhiều màu sáng hơn */
+#custom-power { color: rgba(250,179,135,1); } /* Peach cho power (gợi năng lượng) */
+#custom-wofi { color: rgba(180,190,254,1); } /* Lavender cho launcher (gợi sáng tạo) */
+#network { color: rgba(116,199,236,1); } /* Sapphire cho network (gợi kết nối) */
+#bluetooth { color: rgba(137,180,250,1); } /* Blue cho bluetooth */
+#custom-cava { color: rgba(203,166,247,1); } /* Mauve cho cava (gợi âm nhạc) */
+#custom-mic { color: rgba(245,194,231,1); } /* Pink cho mic (gợi nói chuyện) */
+#power-profiles-daemon { color: rgba(148,226,213,1); } /* Teal mặc định */
+#hyprland-workspaces { color: rgba(249,226,175,1); } /* Yellow cho workspaces */
+#pulseaudio { color: rgba(166,227,161,1); } /* Green cho audio */
+#backlight { color: rgba(245,224,220,1); } /* Flamingo cho backlight (gợi sáng) */
+#custom-media { color: rgba(245,194,231,1); } /* Pink cho media */
+#custom-weather { color: rgba(137,220,235,1); } /* Sky cho weather (gợi trời) */
+#mpd { color: rgba(203,166,247,1); } /* Mauve cho mpd */
+#custom-notify { color: rgba(180,190,254,1); } /* Lavender cho notify */
+
 /* ==== HOVER BUTTONS ==== */
 #custom-power:hover, #custom-wofi:hover, #network:hover, #bluetooth:hover, #custom-cava:hover, #custom-mic:hover, #power-profiles-daemon:hover,
 #hyprland-workspaces:hover, #pulseaudio:hover, #backlight:hover, #custom-media:hover, #custom-weather:hover, #mpd:hover, #custom-notify:hover {
-background: linear-gradient(135deg, rgba(245,194,231,0.11) 50%, rgba(148,226,213,0.11) 100%); /* Nền chuyển sáng khi hover */
-border-color: rgba(245,194,231,1); /* Viền chuyển pink để nổi bật */
-color: rgba(245,194,231,1); /* Chữ chuyển pink pastel */
+background: linear-gradient(135deg, rgba(245,194,231,0.15) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.15) 100%); /* Nền chuyển sáng với nhiều màu hơn khi hover */
+border-color: rgba(180,190,254,1); /* Viền chuyển lavender để đa dạng */
+color: rgba(245,224,220,1); /* Chữ chuyển flamingo pastel sáng */
 box-shadow:
-0 0 6px 1.2px rgba(245,194,231,0.18), /* Tăng glow pink ngoài */
-0 0 0 2px rgba(148,226,213,0.24) inset; /* Dày viền teal trong */
-text-shadow: 0 0 6px rgba(245,194,231,0.18), 0 0 2px rgba(148,226,213,0.14); /* Tăng glow chữ */
-animation: border-glow 1.3s infinite; /* Ánh sáng viền chuyển động */
+0 0 6px 1.2px rgba(180,190,254,0.18), /* Tăng glow lavender ngoài */
+0 0 0 2px rgba(245,194,231,0.24) inset; /* Dày viền pink trong */
+text-shadow: 0 0 6px rgba(180,190,254,0.18), 0 0 2px rgba(148,226,213,0.14); /* Tăng glow chữ với lavender */
+animation: border-glow-multi 1.3s infinite; /* Ánh sáng viền chuyển động với nhiều màu */
 }
-/* ==== BORDER BLING ANIMATION ==== */
-@keyframes border-glow {
+/* ==== BORDER BLING ANIMATION (MULTI-COLOR) ==== */
+@keyframes border-glow-multi {
   0% { box-shadow: 0 0 4px rgba(148,226,213,1), 0 0 0 1.5px rgba(245,194,231,1) inset; } /* Bắt đầu: teal ngoài, pink trong */
-  50% { box-shadow: 0 0 13px rgba(245,194,231,1), 0 0 0 3.5px rgba(148,226,213,1) inset; } /* Giữa: tăng glow pink ngoài, dày teal trong */
+  33% { box-shadow: 0 0 13px rgba(249,226,175,1), 0 0 0 3.5px rgba(180,190,254,1) inset; } /* Giữa 1: yellow ngoài, lavender trong */
+  66% { box-shadow: 0 0 13px rgba(166,227,161,1), 0 0 0 3.5px rgba(137,180,250,1) inset; } /* Giữa 2: green ngoài, blue trong */
   100% { box-shadow: 0 0 4px rgba(148,226,213,1), 0 0 0 1.5px rgba(245,194,231,1) inset; } /* Kết: trở về trạng thái đầu */
 }
 /* ==== OVERRIDE MODULE COLORS ==== */
 #clock, #battery, #pulseaudio, #custom-mic, #bluetooth, #cpu {
-color: rgba(249,226,175,1); /* Set lại màu yellow cho nhóm này (ghi đè) */
 text-shadow: 0 0 4px rgba(148,226,213,0.22), 0 0 1.5px rgba(245,194,231,0.17); /* Glow nhẹ để đồng bộ theme */
 }
 #power-profiles-daemon.performance { color: rgba(245,194,231,1); } /* Chế độ hiệu năng: tô pink để cảnh báo dùng pin/hiệu năng cao */
-#network, #custom-power, #custom-wofi { color: rgba(148,226,213,1); } /* Nhóm kết nối/launcher: teal dịu */
-#power-profiles-daemon, #backlight, #hyprland-workspaces { color: rgba(148,226,213,1); } /* Màu teal nhạt cho trạng thái bình thường */
+#power-profiles-daemon.balanced { color: rgba(148,226,213,1); } /* Chế độ cân bằng: teal dịu */
+#power-profiles-daemon.power-saver { color: rgba(166,227,161,1); } /* Chế độ tiết kiệm: green eco */
 /* ==== CRITICAL/ERROR MODULE ==== */
 #network.disconnected, #pulseaudio.muted, #battery.critical {
 color: rgba(243,139,168,1); /* Red mocha cảnh báo nổi bật */
@@ -140,9 +162,9 @@ text-shadow:
 transition: color 0.15s, text-shadow 0.15s; /* Mượt khi hover đổi màu */
 }
 #tray:hover {
-color: rgba(148,226,213,1); /* Hover chuyển sang teal */
+color: rgba(180,190,254,1); /* Hover chuyển sang lavender */
 text-shadow:
-0 0 5px rgba(148,226,213,0.35), /* Tăng glow teal khi hover */
+0 0 5px rgba(180,190,254,0.35), /* Tăng glow lavender khi hover */
 0 0 2.5px rgba(245,194,231,0.30); /* Thêm glow pink phụ */
 }
 /* ==== CUSTOM MODULES (media/weather/mpd/notify) ==== */
@@ -156,10 +178,10 @@ padding: 4px 12px; /* Đệm trong phù hợp nội dung dài (media/weather) */
 margin: 4px 6px; /* Khoảng cách ngang đồng đều */
 }
 #custom-media:hover, #custom-weather:hover, #mpd:hover, #custom-notify:hover {
-background: linear-gradient(135deg, rgba(245,194,231,1) 20%, rgba(148,226,213,1) 100%); /* Hover chuyển sang gradient sáng rực */
+background: linear-gradient(135deg, rgba(245,194,231,1) 20%, rgba(148,226,213,1) 50%, rgba(180,190,254,1) 100%); /* Hover chuyển sang gradient sáng rực với nhiều màu */
 color: rgba(49,50,68,1); /* Chữ tối để tương phản trên nền sáng */
 border-color: rgba(249,226,175,1); /* Viền yellow tạo điểm nhấn */
-animation: border-glow 1.2s infinite; /* Viền nháy khi hover */
+animation: border-glow-multi 1.2s infinite; /* Viền nháy với nhiều màu khi hover */
 }
 /* ==== WORKSPACES BUTTON ==== */
 #workspaces button {
@@ -177,25 +199,26 @@ font-size: 12px; /* Cỡ chữ riêng cho workspace */
 min-width: 24px; /* Đảm bảo nút không quá nhỏ khi icon/số ít ký tự */
 }
 #workspaces button:hover {
-background: linear-gradient(135deg, rgba(245,194,231,0.10) 47%, rgba(148,226,213,0.10) 100%); /* Hover nền sáng nhẹ */
-border-color: rgba(148,226,213,1); /* Viền teal khi hover */
-color: rgba(245,194,231,1); /* Chữ pink khi hover */
-box-shadow: 0 0 3.5px 0px rgba(148,226,213,0.16); /* Tăng bóng để nổi lên */
-text-shadow: 0 0 5px rgba(245,194,231,0.13); /* Tăng glow chữ */
+background: linear-gradient(135deg, rgba(245,194,231,0.10) 30%, rgba(148,226,213,0.10) 60%, rgba(180,190,254,0.10) 100%); /* Hover nền sáng nhẹ với nhiều màu */
+border-color: rgba(137,180,250,1); /* Viền blue khi hover */
+color: rgba(166,227,161,1); /* Chữ green khi hover */
+box-shadow: 0 0 3.5px 0px rgba(137,180,250,0.16); /* Tăng bóng để nổi lên */
+text-shadow: 0 0 5px rgba(166,227,161,0.13); /* Tăng glow chữ */
 }
 #workspaces button.active {
 background: linear-gradient(
 120deg,
 rgba(245,194,231,1) 0%,
-rgba(245,224,220,1) 18%,
-rgba(248,250,252,1) 35%,
-rgba(148,226,213,1) 55%,
-rgba(248,250,252,1) 75%,
-rgba(245,224,220,1) 90%,
+rgba(245,224,220,1) 15%,
+rgba(180,190,254,1) 30%,
+rgba(137,180,250,1) 45%,
+rgba(148,226,213,1) 60%,
+rgba(166,227,161,1) 75%,
+rgba(249,226,175,1) 90%,
 rgba(245,194,231,1) 100%
-  ); /* Nút active có gradient cầu vồng mocha */
+  ); /* Nút active có gradient cầu vồng mocha đa dạng hơn với nhiều màu sáng */
 color: rgba(49,50,68,1); /* Chữ tối để tương phản trên nền sáng */
-border-color: rgba(249,226,175,1); /* Viền yellow nhấn Active */
+border-color: rgba(203,166,247,1); /* Viền mauve nhấn Active */
 box-shadow:
 0 0 6px 0px rgba(148,226,213,0.26), /* Glow teal ngoài */
 0 0 0 2.3px rgba(245,194,231,0.18) inset; /* Viền pink mảnh bên trong */
@@ -228,12 +251,12 @@ margin: 3px; /* Khoảng cách giữa các item */
 transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Phản hồi hover */
 }
 menuitem:hover {
-background: linear-gradient(135deg, rgba(245,194,231,0.11) 50%, rgba(148,226,213,0.11) 100%); /* Nền chuyển sáng khi hover */
+background: linear-gradient(135deg, rgba(245,194,231,0.11) 30%, rgba(148,226,213,0.11) 60%, rgba(180,190,254,0.11) 100%); /* Nền chuyển sáng khi hover với nhiều màu */
 border-color: rgba(245,194,231,1); /* Viền chuyển pink */
 color: rgba(245,194,231,1); /* Chữ chuyển pink pastel */
 box-shadow:
 0 0 6px 1.2px rgba(245,194,231,0.18), /* Tăng glow pink ngoài */
 0 0 0 2px rgba(148,226,213,0.24) inset; /* Dày viền teal trong */
 text-shadow: 0 0 6px rgba(245,194,231,0.18), 0 0 2px rgba(148,226,213,0.14); /* Tăng glow chữ */
-animation: border-glow 1.3s infinite; /* Ánh sáng viền chuyển động */
+animation: border-glow-multi 1.3s infinite; /* Ánh sáng viền chuyển động với nhiều màu */
 }

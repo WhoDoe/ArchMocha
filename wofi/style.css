@@ -4,142 +4,179 @@
 /* ==== Giao diện chung ==== */
 * {
 border: none;
-border-radius: 16px;
+border-radius: 12px;
 padding: 0;
-font-family: "JetBrainsMono Nerd Font", "Noto Sans", "FontAwesome", sans-serif;
+font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", "FiraCode Nerd Font", monospace;
 font-weight: 700;
-font-size: 15px;
+font-size: 13px;
 color: #cdd6f4;
 text-shadow: 0 0 4px #31324455, 0 0 1px #94e2d555;
+letter-spacing: 0.03em; /* Đồng bộ với Waybar */
 }
 /* ==== Window Glass ==== */
 window {
-background: linear-gradient(133deg, rgba(30,30,46,0.97) 63%, rgba(49,50,68,0.93) 100%);
-border: 2.5px solid #94e2d5;
-border-radius: 20px;
-margin: 8px;
-box-shadow: 0 0 36px 6px #94e2d522, 0 0 120px 0 #f5c2e722 inset;
+background: linear-gradient(135deg, rgba(30,30,46,0.93) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.93) 100%); /* Đồng bộ nền kính tối với Waybar, thêm layer */
+border: 2px solid #94e2d5; /* Viền teal chính */
+border-radius: 10px; /* Đồng bộ bo góc với Waybar */
+margin: 5px;
+box-shadow:
+0 0 9px 1.5px #94e2d523, /* Glow teal bên ngoài */
+0 0 12px 0.5px #f5c2e718, /* Thêm glow pink phụ */
+0 0 18px 0 #f9e2af12 inset; /* Ánh yellow nhẹ bên trong cho sáng hơn */
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Thêm transition pop như Waybar */
 }
 /* ==== Input Box ==== */
 #input {
-background: linear-gradient(125deg, rgba(49,50,68,0.88) 75%, rgba(148,226,213,0.09) 100%);
+background: linear-gradient(135deg, rgba(49,50,68,0.88) 30%, rgba(49,50,68,0.9) 60%, rgba(49,50,68,0.88) 100%); /* Đồng bộ nền button-like với Waybar */
 border: 2px solid #94e2d5;
 color: #cdd6f4;
-border-radius: 13px;
-padding: 10px 22px;
-font-size: 17px;
+border-radius: 10px;
+padding: 5px 12px;
+font-size: 15px;
 font-weight: 800;
-margin: 18px 16px 18px 16px;
-box-shadow: 0 0 12px 3px #94e2d513;
+margin: 5px 5px;
+box-shadow:
+0 0 4px 0.5px #94e2d523, /* Glow ngoài nhạt */
+0 0 0 1.5px #f5c2e721 inset; /* Viền pink mảnh bên trong */
 outline: none;
+text-shadow: 0 0 3px #94e2d520;
 }
 #input:focus {
 border-color: #f5c2e7;
-box-shadow: 0 0 24px 6px #f5c2e725;
+box-shadow:
+0 0 6px 1.2px #f5c2e718, /* Tăng glow pink ngoài */
+0 0 0 2px #94e2d524 inset; /* Dày viền teal trong */
+color: #f5c2e7;
+text-shadow: 0 0 6px #f5c2e718, 0 0 2px #94e2d514;
 }
 /* ==== Danh sách Entry ==== */
 #list {
 background: none;
-border-radius: 14px;
-padding: 8px 8px 5px 8px;
+border-radius: 10px;
+padding: 5px 5px;
 }
 /* ==== Mỗi Entry ==== */
 #entry {
-background: linear-gradient(135deg, #1e1e2e 68%, #313244 100%);
-border: 2px solid;
-margin: 7px 10px;
-padding: 10px 21px;
-border-radius: 16px;
-color: #94e2d5;
+background: linear-gradient(135deg, #1e1e2e 30%, #313244 60%, #1e1e2e 100%); /* Thêm subtle gradient cho chiều sâu */
+border: 2px solid #94e2d5;
+margin: 5px 5px;
+padding: 5px 12px;
+border-radius: 10px;
 font-weight: 700;
-font-size: 15px;
-box-shadow: 0 0 8px 1px #94e2d516;
-text-shadow: 0 0 4px #94e2d520;
+font-size: 13px;
+box-shadow:
+0 0 4px 0.5px #94e2d523, /* Glow ngoài nhạt */
+0 0 0 1.5px #f5c2e721 inset; /* Viền pink mảnh bên trong */
+text-shadow: 0 0 3px #94e2d520;
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Đồng bộ transition pop */
 }
+/* Sử dụng nhiều màu sáng hơn cho entry */
+#entry:nth-child(odd) { color: #94e2d5; } /* Teal cho entry lẻ */
+#entry:nth-child(even) { color: #a6e3a1; } /* Green cho entry chẵn, đa dạng */
+
 #entry:selected {
-background: linear-gradient(135deg, rgba(245,194,231,0.18) 60%, rgba(148,226,213,0.20) 100%);
-border-color: #f5c2e7;
-color: #f5c2e7;
-box-shadow: 0 0 18px 2px #f5c2e744, 0 0 0 2px #94e2d529 inset;
+background: linear-gradient(135deg, rgba(245,194,231,0.15) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.15) 100%); /* Đồng bộ hover với Waybar, nhiều màu */
+border-color: #b4befe; /* Lavender cho selected */
+color: #f2cdcd; /* Flamingo sáng */
+box-shadow:
+0 0 6px 1.2px #b4befe18, /* Glow lavender ngoài */
+0 0 0 2px #f5c2e724 inset; /* Viền pink trong */
+text-shadow: 0 0 6px #b4befe18, 0 0 2px #94e2d514;
 }
 #entry:active {
-background: linear-gradient(135deg, #f5c2e7 0%, #f5e0dc 15%, #94e2d5 80%, #f5c2e7 100%);
+background: linear-gradient(120deg, #f5c2e7 0%, #f5e0dc 15%, #b4befe 30%, #89b4fa 45%, #94e2d5 60%, #a6e3a1 75%, #f9e2af 90%, #f5c2e7 100%); /* Gradient cầu vồng đa dạng như Waybar active */
 color: #313244;
-border-color: #f9e2af;
-text-shadow: 0 0 8px #f9e2af60;
+border-color: #cba6f7; /* Mauve cho active */
+text-shadow: 0 0 8px #cba6f760;
+box-shadow: 0 0 6px 0 #94e2d526, 0 0 0 2.3px #f5c2e718 inset;
 }
 /* ==== Icon app (chỉ PNG/SVG) ==== */
 #icon {
-margin-right: 14px;
+margin-right: 12px;
 border-radius: 8px;
-background: linear-gradient(135deg, rgba(148,226,213,0.13) 70%, rgba(245,194,231,0.08) 100%);
-border: 1.3px solid;
+background: linear-gradient(135deg, rgba(148,226,213,0.13) 30%, rgba(245,194,231,0.08) 60%, rgba(180,190,254,0.10) 100%); /* Thêm nhiều màu cho gradient */
+border: 1.3px solid #94e2d5;
 box-shadow: 0 0 5px 0 #94e2d520;
 }
 #entry:selected #icon, #entry:active #icon {
 border-color: #f5c2e7;
 box-shadow: 0 0 8px 1.5px #f5c2e735;
-background: linear-gradient(135deg, rgba(245,194,231,0.13) 60%, rgba(148,226,213,0.15) 100%);
+background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.12) 100%); /* Đồng bộ hover nhiều màu */
 }
 /* ==== Tên app nổi bật ==== */
 #text {
 font-weight: 800;
-color: #f9e2af;
+color: #f9e2af; /* Yellow mặc định */
 text-shadow: 0 0 8px #94e2d518, 0 0 2px #f5e0dc;
+}
+#entry:selected #text {
+color: #89dceb; /* Sky cho selected, đa dạng */
+}
+#entry:active #text {
+color: #fab387; /* Peach cho active */
 }
 /* ==== Mô tả app ==== */
 #desc {
-color: #94e2d5;
-font-size: 13px;
+color: #74c7ec; /* Sapphire cho desc, sáng hơn */
+font-size: 12px;
 font-style: italic;
 margin-top: 2px;
 margin-bottom: 2px;
 opacity: 0.70;
 }
+#entry:selected #desc {
+color: #89b4fa; /* Blue cho selected */
+}
 /* ==== Button ==== */
 button, #button {
-background: linear-gradient(135deg, #313244 35%, #45475a 100%);
+background: linear-gradient(135deg, #313244 30%, #45475a 60%, #313244 100%); /* Subtle gradient */
 border: 2px solid #94e2d5;
 color: #94e2d5;
-border-radius: 16px;
+border-radius: 10px;
 font-weight: 800;
-font-size: 15px;
-margin: 14px 18px;
-padding: 8px 26px;
-box-shadow: 0 0 6px 0 #94e2d52a, 0 0 0 2px #f5c2e710 inset;
+font-size: 13px;
+margin: 5px 5px;
+padding: 5px 12px;
+box-shadow:
+0 0 4px 0.5px #94e2d523, /* Glow ngoài */
+0 0 0 1.5px #f5c2e721 inset; /* Viền trong */
+transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11);
 }
 button:focus, #button:focus, button:hover, #button:hover {
-background: linear-gradient(135deg, rgba(245,194,231,0.13) 40%, rgba(148,226,213,0.18) 100%);
+background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.18) 60%, rgba(180,190,254,0.15) 100%); /* Hover nhiều màu như Waybar */
 border-color: #f5c2e7;
 color: #f5c2e7;
-box-shadow: 0 0 10px 0 #f5c2e744, 0 0 0 2px #94e2d518 inset;
+box-shadow:
+0 0 6px 1.2px #f5c2e718, /* Tăng glow */
+0 0 0 2px #94e2d524 inset;
 text-shadow: 0 0 6px #f5c2e755;
 }
 /* ==== Scrollbar ==== */
 scrollbar, scrollbar slider {
 background: transparent;
-border-radius: 11px;
+border-radius: 10px;
 }
 scrollbar slider {
-background: linear-gradient(135deg, #94e2d5 50%, #f5c2e7 100%);
+background: linear-gradient(135deg, #94e2d5 30%, #f5c2e7 60%, #b4befe 100%); /* Gradient nhiều màu sáng cho slider */
 opacity: 0.38;
-border-radius: 11px;
+border-radius: 10px;
 }
 /* ==== Notification ==== */
 #notification {
-background: linear-gradient(135deg, rgba(30,30,46,0.98) 70%, rgba(49,50,68,0.91) 100%);
+background: linear-gradient(135deg, rgba(30,30,46,0.98) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.98) 100%); /* Đồng bộ nền với window */
 border: 2px solid #94e2d5;
-border-radius: 14px;
+border-radius: 10px;
 color: #f5c2e7;
-font-size: 15px;
+font-size: 13px;
 font-weight: 800;
-padding: 14px 28px;
-box-shadow: 0 0 13px 1.5px #94e2d518;
+padding: 5px 12px;
+box-shadow: 0 0 9px 1.5px #94e2d518;
 }
 #notification.critical {
-border-color: #f5c2e7;
+border-color: #f38ba8; /* Red cho critical */
 color: #f9e2af;
-background: linear-gradient(135deg, rgba(245,194,231,0.11) 45%, rgba(249,226,175,0.11) 100%);
+background: linear-gradient(135deg, rgba(243,139,168,0.11) 30%, rgba(249,226,175,0.11) 60%, rgba(243,139,168,0.11) 100%);
+box-shadow: 0 0 10px #f38ba866;
 }
 #notification label {
 color: inherit;
@@ -147,7 +184,7 @@ font-weight: 700;
 }
 /* ==== Icon PNG thủ công (image widget) ==== */
 image, #image {
-border-radius: 7px;
+border-radius: 8px;
 margin-right: 8px;
 box-shadow: 0 0 8px 0 #94e2d521, 0 0 4px 0 #f5c2e720 inset;
 background: transparent;
