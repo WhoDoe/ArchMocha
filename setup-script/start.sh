@@ -111,8 +111,9 @@ main() {
   auto_set_grub_theme
   auto_rice_ly
 
-  # Install additional extras (e.g., momoisay)
+  # Install additional extras (e.g., momoisay, steam)
   install_momoisay
+  install_steam
 
   # Enable required services
   enable_services
