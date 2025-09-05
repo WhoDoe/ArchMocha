@@ -10,11 +10,11 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 declare -a REQUIRED_FILES=(
-  "src/init.sh"
+  "codes/init.sh"
   "logging.sh"
   "utils.sh"
   "network.sh"
-  "install.sh"
+  "system.sh"
   "theme.sh"
   "services.sh"
   "extras.sh"

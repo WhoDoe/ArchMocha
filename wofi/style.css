@@ -1,191 +1,214 @@
 /* ╔═════════════════════════════════════════════╗
-   ║ Wofi Catppuccin Mocha Glass – Clean Edition ║
+   ║ Wofi Catppuccin Mocha Glass – Upgraded Edition (Synced with Kitty) ║
    ╚═════════════════════════════════════════════╝ */
+/* ==== Upgrades for Sync with Kitty ==== */
+/* - Đồng bộ màu chính xác từ palette Kitty: Sử dụng color0-15 hex codes trực tiếp (e.g., base #1e1e2e, text #cdd6f4, accents như pink #f5c2e7, teal #94e2d5...).
+   - Thêm opacity/glass effect mạnh hơn: Background rgba với alpha ~0.93 như Kitty background_opacity.
+   - Cursor/input focus: Match cursor color lavender #b4befe, tăng glow như visual bell.
+   - Entry/selected: Thêm powerline-inspired gradient (như tab bar), multi-pastel bright (teal to pink to yellow).
+   - Fonts: Đồng bộ font family/size, thêm adjust cho line height subtle.
+   - Borders: 3px width như Kitty window_border_width, active pink #f5c2e7.
+   - Transitions/shadows: Tăng cubic-bezier pop, thêm inset/outset glow đa màu.
+   - Extra: Thêm subtle blur nếu CSS support (filter: blur), multi-color scrollbar, notification match visual bell.
+   - Pro Tip: Để apply, lưu vào ~/.config/wofi/style.css và restart Wofi. Đồng bộ với Kitty cho rice unified! */
+
 /* ==== Giao diện chung ==== */
 * {
-border: none;
-border-radius: 12px;
-padding: 0;
-font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font", "FiraCode Nerd Font", monospace;
-font-weight: 700;
-font-size: 13px;
-color: #cdd6f4;
-text-shadow: 0 0 4px #31324455, 0 0 1px #94e2d555;
-letter-spacing: 0.03em; /* Đồng bộ với Waybar */
+    border: none;
+    border-radius: 10px; /* Đồng bộ bo góc với Kitty tab/powerline round */
+    padding: 0;
+    font-family: "JetBrainsMono Nerd Font", "FiraCode Nerd Font", "Iosevka Nerd Font", monospace;
+    font-weight: 700;
+    font-size: 13px; /* Đồng bộ font_size 13 từ Kitty */
+    color: #cdd6f4; /* foreground từ Kitty */
+    text-shadow: 0 0 4px #31324455, 0 0 1px #94e2d555;
+    letter-spacing: 0.03em;
+    line-height: 105%; /* Đồng bộ adjust_line_height từ Kitty cho readable */
 }
+
 /* ==== Window Glass ==== */
 window {
-background: linear-gradient(135deg, rgba(30,30,46,0.93) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.93) 100%); /* Đồng bộ nền kính tối với Waybar, thêm layer */
-border: 2px solid #94e2d5; /* Viền teal chính */
-border-radius: 10px; /* Đồng bộ bo góc với Waybar */
-margin: 5px;
-box-shadow:
-0 0 9px 1.5px #94e2d523, /* Glow teal bên ngoài */
-0 0 12px 0.5px #f5c2e718, /* Thêm glow pink phụ */
-0 0 18px 0 #f9e2af12 inset; /* Ánh yellow nhẹ bên trong cho sáng hơn */
-transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Thêm transition pop như Waybar */
+    background: linear-gradient(135deg, rgba(30,30,46,0.93) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.93) 100%); /* Đồng bộ background #1e1e2e với opacity 0.93 */
+    border: 3px solid #94e2d5; /* Tăng width 3px như Kitty, teal chính */
+    border-radius: 10px;
+    margin: 5px;
+    box-shadow:
+        0 0 9px 1.5px #94e2d523, /* Glow teal ngoài */
+        0 0 12px 0.5px #f5c2e718, /* Glow pink phụ */
+        0 0 18px 0 #f9e2af12 inset; /* Ánh yellow trong */
+    transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11);
+    filter: blur(1px); /* Thêm subtle blur như Kitty background_blur (nếu CSS support) */
 }
+
 /* ==== Input Box ==== */
 #input {
-background: linear-gradient(135deg, rgba(49,50,68,0.88) 30%, rgba(49,50,68,0.9) 60%, rgba(49,50,68,0.88) 100%); /* Đồng bộ nền button-like với Waybar */
-border: 2px solid #94e2d5;
-color: #cdd6f4;
-border-radius: 10px;
-padding: 5px 12px;
-font-size: 15px;
-font-weight: 800;
-margin: 5px 5px;
-box-shadow:
-0 0 4px 0.5px #94e2d523, /* Glow ngoài nhạt */
-0 0 0 1.5px #f5c2e721 inset; /* Viền pink mảnh bên trong */
-outline: none;
-text-shadow: 0 0 3px #94e2d520;
+    background: linear-gradient(135deg, rgba(49,50,68,0.88) 30%, rgba(49,50,68,0.9) 60%, rgba(49,50,68,0.88) 100%);
+    border: 3px solid #94e2d5; /* Đồng bộ border width */
+    color: #cdd6f4;
+    border-radius: 10px;
+    padding: 8px 12px; /* Tăng padding như Kitty window_padding_width */
+    font-size: 15px;
+    font-weight: 800;
+    margin: 5px 5px;
+    box-shadow:
+        0 0 4px 0.5px #94e2d523,
+        0 0 0 1.5px #f5c2e721 inset;
+    outline: none;
+    text-shadow: 0 0 3px #94e2d520;
 }
 #input:focus {
-border-color: #f5c2e7;
-box-shadow:
-0 0 6px 1.2px #f5c2e718, /* Tăng glow pink ngoài */
-0 0 0 2px #94e2d524 inset; /* Dày viền teal trong */
-color: #f5c2e7;
-text-shadow: 0 0 6px #f5c2e718, 0 0 2px #94e2d514;
+    border-color: #f5c2e7; /* active_border_color pink từ Kitty */
+    box-shadow:
+        0 0 6px 1.2px #f5c2e718,
+        0 0 0 2px #94e2d524 inset;
+    color: #b4befe; /* cursor lavender từ Kitty cho focus text */
+    text-shadow: 0 0 6px #f5c2e718, 0 0 2px #94e2d514;
 }
+
 /* ==== Danh sách Entry ==== */
 #list {
-background: none;
-border-radius: 10px;
-padding: 5px 5px;
+    background: none;
+    border-radius: 10px;
+    padding: 5px 5px;
 }
+
 /* ==== Mỗi Entry ==== */
 #entry {
-background: linear-gradient(135deg, #1e1e2e 30%, #313244 60%, #1e1e2e 100%); /* Thêm subtle gradient cho chiều sâu */
-border: 2px solid #94e2d5;
-margin: 5px 5px;
-padding: 5px 12px;
-border-radius: 10px;
-font-weight: 700;
-font-size: 13px;
-box-shadow:
-0 0 4px 0.5px #94e2d523, /* Glow ngoài nhạt */
-0 0 0 1.5px #f5c2e721 inset; /* Viền pink mảnh bên trong */
-text-shadow: 0 0 3px #94e2d520;
-transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11); /* Đồng bộ transition pop */
+    background: linear-gradient(135deg, #1e1e2e 30%, #313244 60%, #1e1e2e 100%); /* base từ Kitty background */
+    border: 3px solid #94e2d5;
+    margin: 5px 5px;
+    padding: 8px 12px; /* Đồng bộ padding */
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 13px;
+    box-shadow:
+        0 0 4px 0.5px #94e2d523,
+        0 0 0 1.5px #f5c2e721 inset;
+    text-shadow: 0 0 3px #94e2d520;
+    transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11);
 }
-/* Sử dụng nhiều màu sáng hơn cho entry */
-#entry:nth-child(odd) { color: #94e2d5; } /* Teal cho entry lẻ */
-#entry:nth-child(even) { color: #a6e3a1; } /* Green cho entry chẵn, đa dạng */
-
+/* Sử dụng nhiều màu sáng hơn từ Kitty palette */
+#entry:nth-child(odd) { color: #94e2d5; } /* color6 teal */
+#entry:nth-child(even) { color: #a6e3a1; } /* color2 green */
 #entry:selected {
-background: linear-gradient(135deg, rgba(245,194,231,0.15) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.15) 100%); /* Đồng bộ hover với Waybar, nhiều màu */
-border-color: #b4befe; /* Lavender cho selected */
-color: #f2cdcd; /* Flamingo sáng */
-box-shadow:
-0 0 6px 1.2px #b4befe18, /* Glow lavender ngoài */
-0 0 0 2px #f5c2e724 inset; /* Viền pink trong */
-text-shadow: 0 0 6px #b4befe18, 0 0 2px #94e2d514;
+    background: linear-gradient(135deg, rgba(245,194,231,0.15) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.15) 100%); /* Multi-pastel như Kitty tab active */
+    border-color: #b4befe; /* Lavender từ active_tab_foreground */
+    color: #f2cdcd; /* color14 flamingo */
+    box-shadow:
+        0 0 6px 1.2px #b4befe18,
+        0 0 0 2px #f5c2e724 inset;
+    text-shadow: 0 0 6px #b4befe18, 0 0 2px #94e2d514;
 }
 #entry:active {
-background: linear-gradient(120deg, #f5c2e7 0%, #f5e0dc 15%, #b4befe 30%, #89b4fa 45%, #94e2d5 60%, #a6e3a1 75%, #f9e2af 90%, #f5c2e7 100%); /* Gradient cầu vồng đa dạng như Waybar active */
-color: #313244;
-border-color: #cba6f7; /* Mauve cho active */
-text-shadow: 0 0 8px #cba6f760;
-box-shadow: 0 0 6px 0 #94e2d526, 0 0 0 2.3px #f5c2e718 inset;
+    background: linear-gradient(120deg, #f5c2e7 0%, #f5e0dc 15%, #b4befe 30%, #89b4fa 45%, #94e2d5 60%, #a6e3a1 75%, #f9e2af 90%, #f5c2e7 100%); /* Gradient cầu vồng từ Kitty comment */
+    color: #313244; /* tab_bar_background */
+    border-color: #cba6f7; /* color13 mauve */
+    text-shadow: 0 0 8px #cba6f760;
+    box-shadow: 0 0 6px 0 #94e2d526, 0 0 0 2.3px #f5c2e718 inset;
 }
+
 /* ==== Icon app (chỉ PNG/SVG) ==== */
 #icon {
-margin-right: 12px;
-border-radius: 8px;
-background: linear-gradient(135deg, rgba(148,226,213,0.13) 30%, rgba(245,194,231,0.08) 60%, rgba(180,190,254,0.10) 100%); /* Thêm nhiều màu cho gradient */
-border: 1.3px solid #94e2d5;
-box-shadow: 0 0 5px 0 #94e2d520;
+    margin-right: 12px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(148,226,213,0.13) 30%, rgba(245,194,231,0.08) 60%, rgba(180,190,254,0.10) 100%);
+    border: 1.3px solid #94e2d5;
+    box-shadow: 0 0 5px 0 #94e2d520;
 }
 #entry:selected #icon, #entry:active #icon {
-border-color: #f5c2e7;
-box-shadow: 0 0 8px 1.5px #f5c2e735;
-background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.12) 100%); /* Đồng bộ hover nhiều màu */
+    border-color: #f5c2e7;
+    box-shadow: 0 0 8px 1.5px #f5c2e735;
+    background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.15) 60%, rgba(249,226,175,0.12) 100%);
 }
+
 /* ==== Tên app nổi bật ==== */
 #text {
-font-weight: 800;
-color: #f9e2af; /* Yellow mặc định */
-text-shadow: 0 0 8px #94e2d518, 0 0 2px #f5e0dc;
+    font-weight: 800;
+    color: #f9e2af; /* color3 yellow */
+    text-shadow: 0 0 8px #94e2d518, 0 0 2px #f5e0dc;
 }
 #entry:selected #text {
-color: #89dceb; /* Sky cho selected, đa dạng */
+    color: #89dceb; /* color12 sky */
 }
 #entry:active #text {
-color: #fab387; /* Peach cho active */
+    color: #fab387; /* color11 peach */
 }
+
 /* ==== Mô tả app ==== */
 #desc {
-color: #74c7ec; /* Sapphire cho desc, sáng hơn */
-font-size: 12px;
-font-style: italic;
-margin-top: 2px;
-margin-bottom: 2px;
-opacity: 0.70;
+    color: #74c7ec; /* color10 sapphire */
+    font-size: 12px;
+    font-style: italic;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    opacity: 0.75; /* Đồng bộ dim_opacity từ Kitty */
 }
 #entry:selected #desc {
-color: #89b4fa; /* Blue cho selected */
+    color: #89b4fa; /* color4 blue */
 }
+
 /* ==== Button ==== */
 button, #button {
-background: linear-gradient(135deg, #313244 30%, #45475a 60%, #313244 100%); /* Subtle gradient */
-border: 2px solid #94e2d5;
-color: #94e2d5;
-border-radius: 10px;
-font-weight: 800;
-font-size: 13px;
-margin: 5px 5px;
-padding: 5px 12px;
-box-shadow:
-0 0 4px 0.5px #94e2d523, /* Glow ngoài */
-0 0 0 1.5px #f5c2e721 inset; /* Viền trong */
-transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11);
+    background: linear-gradient(135deg, #313244 30%, #45475a 60%, #313244 100%); /* color0 to color8 grays */
+    border: 3px solid #94e2d5;
+    color: #94e2d5;
+    border-radius: 10px;
+    font-weight: 800;
+    font-size: 13px;
+    margin: 5px 5px;
+    padding: 8px 12px;
+    box-shadow:
+        0 0 4px 0.5px #94e2d523,
+        0 0 0 1.5px #f5c2e721 inset;
+    transition: all 0.18s cubic-bezier(.38,1.24,.46,1.11);
 }
 button:focus, #button:focus, button:hover, #button:hover {
-background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.18) 60%, rgba(180,190,254,0.15) 100%); /* Hover nhiều màu như Waybar */
-border-color: #f5c2e7;
-color: #f5c2e7;
-box-shadow:
-0 0 6px 1.2px #f5c2e718, /* Tăng glow */
-0 0 0 2px #94e2d524 inset;
-text-shadow: 0 0 6px #f5c2e755;
+    background: linear-gradient(135deg, rgba(245,194,231,0.13) 30%, rgba(148,226,213,0.18) 60%, rgba(180,190,254,0.15) 100%);
+    border-color: #f5c2e7;
+    color: #f5c2e7;
+    box-shadow:
+        0 0 6px 1.2px #f5c2e718,
+        0 0 0 2px #94e2d524 inset;
+    text-shadow: 0 0 6px #f5c2e755;
 }
+
 /* ==== Scrollbar ==== */
 scrollbar, scrollbar slider {
-background: transparent;
-border-radius: 10px;
+    background: transparent;
+    border-radius: 10px;
 }
 scrollbar slider {
-background: linear-gradient(135deg, #94e2d5 30%, #f5c2e7 60%, #b4befe 100%); /* Gradient nhiều màu sáng cho slider */
-opacity: 0.38;
-border-radius: 10px;
+    background: linear-gradient(135deg, #94e2d5 30%, #f5c2e7 60%, #b4befe 100%); /* Multi-color từ Kitty accents */
+    opacity: 0.38;
+    border-radius: 10px;
 }
+
 /* ==== Notification ==== */
 #notification {
-background: linear-gradient(135deg, rgba(30,30,46,0.98) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.98) 100%); /* Đồng bộ nền với window */
-border: 2px solid #94e2d5;
-border-radius: 10px;
-color: #f5c2e7;
-font-size: 13px;
-font-weight: 800;
-padding: 5px 12px;
-box-shadow: 0 0 9px 1.5px #94e2d518;
+    background: linear-gradient(135deg, rgba(30,30,46,0.98) 30%, rgba(49,50,68,0.91) 60%, rgba(30,30,46,0.98) 100%);
+    border: 3px solid #94e2d5;
+    border-radius: 10px;
+    color: #f5c2e7;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 8px 12px;
+    box-shadow: 0 0 9px 1.5px #94e2d518;
 }
 #notification.critical {
-border-color: #f38ba8; /* Red cho critical */
-color: #f9e2af;
-background: linear-gradient(135deg, rgba(243,139,168,0.11) 30%, rgba(249,226,175,0.11) 60%, rgba(243,139,168,0.11) 100%);
-box-shadow: 0 0 10px #f38ba866;
+    border-color: #f38ba8; /* color1 red */
+    color: #f9e2af; /* yellow cho highlight */
+    background: linear-gradient(135deg, rgba(243,139,168,0.11) 30%, rgba(249,226,175,0.11) 60%, rgba(243,139,168,0.11) 100%);
+    box-shadow: 0 0 10px #f38ba866;
 }
 #notification label {
-color: inherit;
-font-weight: 700;
+    color: inherit;
+    font-weight: 700;
 }
+
 /* ==== Icon PNG thủ công (image widget) ==== */
 image, #image {
-border-radius: 8px;
-margin-right: 8px;
-box-shadow: 0 0 8px 0 #94e2d521, 0 0 4px 0 #f5c2e720 inset;
-background: transparent;
+    border-radius: 8px;
+    margin-right: 8px;
+    box-shadow: 0 0 8px 0 #94e2d521, 0 0 4px 0 #f5c2e720 inset;
+    background: transparent;
 }
