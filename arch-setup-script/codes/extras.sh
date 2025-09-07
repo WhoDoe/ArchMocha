@@ -242,8 +242,24 @@ install_steam() {
     sudo ln -s /usr/lib32/libpcre.so.1 /usr/lib32/libpcre.so.3
   fi
 
+  # Configure Steam desktop file for auto-launch with LD_PRELOAD and flags
+  log INFO "Configuring Steam desktop file for native runtime with fixes..."
+  LOCAL_DESKTOP="$HOME/.local/share/applications/steam.desktop"
+  mkdir -p "$HOME/.local/share/applications"
+  if [ ! -f "$LOCAL_DESKTOP" ]; then
+    cp /usr/share/applications/steam.desktop "$LOCAL_DESKTOP"
+  fi
+  if ! grep -q "steam-native" "$LOCAL_DESKTOP"; then
+    cp "$LOCAL_DESKTOP" "$LOCAL_DESKTOP.bak"
+    sed -i 's|^Exec=/usr/bin/steam %U|Exec=env LD_PRELOAD="/usr/lib32/libgio-2.0.so.0 /usr/lib32/libglib-2.0.so.0 /usr/lib32/libgmodule-2.0.so.0 /usr/lib/libgio-2.0.so.0 /usr/lib/libglib-2.0.so.0 /usr/lib/libgmodule-2.0.so.0" /usr/bin/steam-native %U -no-cef-sandbox|' "$LOCAL_DESKTOP"
+    log INFO "Steam desktop file configured for native runtime with LD_PRELOAD and -no-cef-sandbox."
+  else
+    log INFO "Steam desktop file already configured."
+  fi
+
   # Log success
-  log SUCCESS "Steam and drivers installed successfully! Run 'steam' to launch."
+  log SUCCESS "Steam and drivers installed successfully! Launch Steam from your menu or run 'steam-native' with the configured options."
   log INFO "Please reboot your system to apply changes, especially for driver modules."
+  log INFO "If issues persist, try Steam Beta or manual launch: steam-native -no-cef-sandbox."
   return 0
 }
