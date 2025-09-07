@@ -49,24 +49,12 @@ install_momoisay() {
 }
 
 install_steam() {
-  # Check if script is run as root
-  if [[ $EUID -ne 0 ]]; then
-    log ERROR "This script must be run as root. Please use sudo."
-    return 1
-  fi
-
-  # Check if steam is already installed
-  if command -v steam &>/dev/null; then
-    log INFO "Steam is already installed, skipping."
-    return 0
-  fi
-
   # Log start of installation
   log INFO "Installing Steam and required drivers..."
 
   # Perform a full system update first
   log INFO "Performing full system update..."
-  pacman -Syu --noconfirm &
+  sudo pacman -Syu --noconfirm &
   pid=$!
   spinner $pid "Updating system..."
   wait $pid || { log ERROR "Failed to update system!"; return 1; }
@@ -74,8 +62,8 @@ install_steam() {
   # Enable multilib repository if not already enabled
   if ! grep -q '^\[multilib\]$' /etc/pacman.conf; then
     log INFO "Enabling multilib repository..."
-    sed -i "/\[multilib\]/,/Include/s/^#//" /etc/pacman.conf || { log ERROR "Failed to enable multilib repository!"; return 1; }
-    pacman -Syu --noconfirm &
+    sudo sed -i "/\[multilib\]/,/Include/s/^#//" /etc/pacman.conf || { log ERROR "Failed to enable multilib repository!"; return 1; }
+    sudo pacman -Syu --noconfirm &
     pid=$!
     spinner $pid "Updating package database after enabling multilib..."
     wait $pid || { log ERROR "Failed to update package database!"; return 1; }
@@ -116,15 +104,15 @@ install_steam() {
       log INFO "Checking for package conflicts..."
       if pacman -Qs "^nvidia$" > /dev/null && [ "$DRIVER" = "nvidia-dkms" ]; then
         log INFO "Removing nvidia to install nvidia-dkms..."
-        pacman -Rdd --noconfirm nvidia || { log ERROR "Failed to remove nvidia package!"; return 1; }
+        sudo pacman -Rdd --noconfirm nvidia || { log ERROR "Failed to remove nvidia package!"; return 1; }
       elif pacman -Qs "^nvidia-dkms$" > /dev/null && [ "$DRIVER" = "nvidia" ]; then
         log INFO "Removing nvidia-dkms to install nvidia..."
-        pacman -Rdd --noconfirm nvidia-dkms || { log ERROR "Failed to remove nvidia-dkms package!"; return 1; }
+        sudo pacman -Rdd --noconfirm nvidia-dkms || { log ERROR "Failed to remove nvidia-dkms package!"; return 1; }
       fi
 
       # Install NVIDIA driver and related packages
       log INFO "Installing $DRIVER, nvidia-utils, lib32-nvidia-utils, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      pacman -S --noconfirm --needed $DRIVER nvidia-utils lib32-nvidia-utils vulkan-icd-loader lib32-vulkan-icd-loader &
+      sudo pacman -S --noconfirm --needed $DRIVER nvidia-utils lib32-nvidia-utils vulkan-icd-loader lib32-vulkan-icd-loader &
       pid=$!
       spinner $pid "Installing NVIDIA drivers and libraries..."
       wait $pid || { log ERROR "Failed to install NVIDIA drivers!"; return 1; }
@@ -132,7 +120,7 @@ install_steam() {
       # Generate Xorg configuration only if X11 is in use (optional for Wayland users)
       if [[ -n "$DISPLAY" && "$XDG_SESSION_TYPE" == "x11" ]]; then
         log INFO "Generating Xorg configuration for NVIDIA..."
-        nvidia-xconfig || { log WARN "Failed to generate Xorg configuration. This may not be needed on Wayland."; }
+        sudo nvidia-xconfig || { log WARN "Failed to generate Xorg configuration. This may not be needed on Wayland."; }
       else
         log INFO "Skipping Xorg configuration (Wayland or no display detected)."
       fi
@@ -149,7 +137,7 @@ install_steam() {
 
     amd)
       log INFO "Installing AMD drivers: amdvlk, vulkan-radeon, lib32-vulkan-radeon, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      pacman -S --noconfirm --needed amdvlk vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
+      sudo pacman -S --noconfirm --needed amdvlk vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
       pid=$!
       spinner $pid "Installing AMD drivers and libraries..."
       wait $pid || { log ERROR "Failed to install AMD drivers!"; return 1; }
@@ -157,7 +145,7 @@ install_steam() {
 
     intel)
       log INFO "Installing Intel drivers: vulkan-intel, lib32-vulkan-intel, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      pacman -S --noconfirm --needed vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
+      sudo pacman -S --noconfirm --needed vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
       pid=$!
       spinner $pid "Installing Intel drivers and libraries..."
       wait $pid || { log ERROR "Failed to install Intel drivers!"; return 1; }
@@ -165,7 +153,7 @@ install_steam() {
 
     *)
       log INFO "Installing generic Mesa for OpenGL support..."
-      pacman -S --noconfirm --needed mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader &
+      sudo pacman -S --noconfirm --needed mesa lib32-mesa vulkan-icd-loader lib32-vulkan-icd-loader &
       pid=$!
       spinner $pid "Installing Mesa and Vulkan libraries..."
       wait $pid || { log ERROR "Failed to install Mesa packages!"; return 1; }
@@ -174,7 +162,7 @@ install_steam() {
 
   # Install steam and steam-native-runtime
   log INFO "Installing Steam and steam-native-runtime..."
-  pacman -S --noconfirm --needed steam steam-native-runtime &
+  sudo pacman -S --noconfirm --needed steam steam-native-runtime &
   pid=$!
   spinner $pid "Installing Steam and native runtime..."
   wait $pid || { log ERROR "Failed to install Steam and steam-native-runtime!"; return 1; }
@@ -187,7 +175,7 @@ install_steam() {
 
   # Ensure tools for verification are installed
   log INFO "Ensuring verification tools are installed..."
-  pacman -S --noconfirm --needed mesa-demos vulkan-tools &
+  sudo pacman -S --noconfirm --needed mesa-demos vulkan-tools &
   pid=$!
   spinner $pid "Installing mesa-demos and vulkan-tools..."
   wait $pid || { log WARN "Failed to install verification tools. Skipping some checks."; }
