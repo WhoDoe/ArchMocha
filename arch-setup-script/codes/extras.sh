@@ -49,6 +49,16 @@ install_momoisay() {
 }
 
 install_steam() {
+  # Prompt for sudo credentials at the start to cache them
+  log INFO "Authenticating sudo for the installation process..."
+  sudo -v || { log ERROR "Sudo authentication failed. Please ensure you have sudo privileges."; return 1; }
+
+  # Check if steam is already installed
+  if command -v steam &>/dev/null; then
+    log INFO "Steam is already installed, skipping."
+    return 0
+  fi
+
   # Log start of installation
   log INFO "Installing Steam and required drivers..."
 
@@ -71,6 +81,13 @@ install_steam() {
     log INFO "Multilib repository is already enabled."
   fi
 
+  # Install additional 32-bit support packages
+  log INFO "Installing additional 32-bit support packages..."
+  sudo pacman -S --noconfirm --needed lib32-gcc-libs lib32-glibc &
+  pid=$!
+  spinner $pid "Installing 32-bit support..."
+  wait $pid || { log WARN "Failed to install 32-bit support packages. Continuing..."; }
+
   # Detect GPU type
   log INFO "Detecting GPU..."
   GPU_TYPE="none"
@@ -90,39 +107,53 @@ install_steam() {
   # Install GPU drivers based on detection
   case "$GPU_TYPE" in
     nvidia)
-      # Check kernel type to decide between nvidia and nvidia-dkms
+      # Detect if newer GPU for nvidia-open (Turing+), fallback to nvidia
+      log INFO "Checking NVIDIA GPU generation..."
+      # Simple check: assume modern, use open if available; but for script, use dkms for flexibility
       KERNEL=$(uname -r)
       if [[ $KERNEL == *-lts || $KERNEL == *-rt || $KERNEL == *-zen || $KERNEL == *-hardened ]]; then
-        DRIVER="nvidia-dkms"
+        DRIVER="nvidia-open-dkms"  # Prefer open for newer
+        if ! pacman -Ss nvidia-open-dkms &>/dev/null; then
+          DRIVER="nvidia-dkms"
+        fi
         log INFO "Selected $DRIVER for kernel $KERNEL (custom kernel detected)."
       else
-        DRIVER="nvidia"
+        DRIVER="nvidia-open"
+        if ! pacman -Ss nvidia-open &>/dev/null; then
+          DRIVER="nvidia"
+        fi
         log INFO "Selected $DRIVER for kernel $KERNEL."
       fi
 
-      # Handle package conflicts
+      # Handle package conflicts (expanded for open variants)
       log INFO "Checking for package conflicts..."
-      if pacman -Qs "^nvidia$" > /dev/null && [ "$DRIVER" = "nvidia-dkms" ]; then
-        log INFO "Removing nvidia to install nvidia-dkms..."
-        sudo pacman -Rdd --noconfirm nvidia || { log ERROR "Failed to remove nvidia package!"; return 1; }
-      elif pacman -Qs "^nvidia-dkms$" > /dev/null && [ "$DRIVER" = "nvidia" ]; then
-        log INFO "Removing nvidia-dkms to install nvidia..."
-        sudo pacman -Rdd --noconfirm nvidia-dkms || { log ERROR "Failed to remove nvidia-dkms package!"; return 1; }
-      fi
+      CONFLICTING_PKGS=("nvidia" "nvidia-dkms" "nvidia-open" "nvidia-open-dkms")
+      for pkg in "${CONFLICTING_PKGS[@]}"; do
+        if pacman -Qs "^$pkg$" > /dev/null && [ "$pkg" != "$DRIVER" ]; then
+          log INFO "Removing conflicting package $pkg to install $DRIVER..."
+          sudo pacman -Rdd --noconfirm "$pkg" || { log ERROR "Failed to remove $pkg package!"; return 1; }
+        fi
+      done
 
       # Install NVIDIA driver and related packages
-      log INFO "Installing $DRIVER, nvidia-utils, lib32-nvidia-utils, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      sudo pacman -S --noconfirm --needed $DRIVER nvidia-utils lib32-nvidia-utils vulkan-icd-loader lib32-vulkan-icd-loader &
+      log INFO "Installing $DRIVER, nvidia-utils, lib32-nvidia-utils, vulkan-icd-loader, lib32-vulkan-icd-loader, nvidia-settings..."
+      sudo pacman -S --noconfirm --needed "$DRIVER" nvidia-utils lib32-nvidia-utils vulkan-icd-loader lib32-vulkan-icd-loader nvidia-settings &
       pid=$!
       spinner $pid "Installing NVIDIA drivers and libraries..."
       wait $pid || { log ERROR "Failed to install NVIDIA drivers!"; return 1; }
 
-      # Generate Xorg configuration only if X11 is in use (optional for Wayland users)
+      # Generate Xorg configuration only if X11 is in use
       if [[ -n "$DISPLAY" && "$XDG_SESSION_TYPE" == "x11" ]]; then
         log INFO "Generating Xorg configuration for NVIDIA..."
         sudo nvidia-xconfig || { log WARN "Failed to generate Xorg configuration. This may not be needed on Wayland."; }
       else
         log INFO "Skipping Xorg configuration (Wayland or no display detected)."
+      fi
+
+      # Enable DRM kernel mode setting for Wayland (if not default)
+      log INFO "Ensuring NVIDIA DRM modeset for Wayland..."
+      if [ ! -f /etc/modprobe.d/nvidia.conf ]; then
+        echo "options nvidia_drm modeset=1 fbdev=1" | sudo tee /etc/modprobe.d/nvidia.conf
       fi
 
       # Verify NVIDIA driver
@@ -136,16 +167,16 @@ install_steam() {
       ;;
 
     amd)
-      log INFO "Installing AMD drivers: amdvlk, vulkan-radeon, lib32-vulkan-radeon, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      sudo pacman -S --noconfirm --needed amdvlk vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
+      log INFO "Installing AMD drivers: mesa lib32-mesa amdvlk vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader..."
+      sudo pacman -S --noconfirm --needed mesa lib32-mesa amdvlk vulkan-radeon lib32-vulkan-radeon vulkan-icd-loader lib32-vulkan-icd-loader &
       pid=$!
       spinner $pid "Installing AMD drivers and libraries..."
       wait $pid || { log ERROR "Failed to install AMD drivers!"; return 1; }
       ;;
 
     intel)
-      log INFO "Installing Intel drivers: vulkan-intel, lib32-vulkan-intel, vulkan-icd-loader, lib32-vulkan-icd-loader..."
-      sudo pacman -S --noconfirm --needed vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader mesa lib32-mesa &
+      log INFO "Installing Intel drivers: mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader..."
+      sudo pacman -S --noconfirm --needed mesa lib32-mesa vulkan-intel lib32-vulkan-intel vulkan-icd-loader lib32-vulkan-icd-loader &
       pid=$!
       spinner $pid "Installing Intel drivers and libraries..."
       wait $pid || { log ERROR "Failed to install Intel drivers!"; return 1; }
@@ -166,6 +197,13 @@ install_steam() {
   pid=$!
   spinner $pid "Installing Steam and native runtime..."
   wait $pid || { log ERROR "Failed to install Steam and steam-native-runtime!"; return 1; }
+
+  # Install font packages for better Steam compatibility
+  log INFO "Installing fonts for Steam..."
+  sudo pacman -S --noconfirm --needed ttf-liberation &
+  pid=$!
+  spinner $pid "Installing fonts..."
+  wait $pid || { log WARN "Failed to install fonts. Continuing..."; }
 
   # Verify Steam installation
   if ! command -v steam &>/dev/null; then
@@ -194,6 +232,14 @@ install_steam() {
     vulkaninfo --summary || log WARN "Vulkan check returned no output."
   else
     log WARN "vulkaninfo not found. Vulkan support check skipped."
+  fi
+
+  # Add symlinks for libpcre if not exist (for native runtime fixes)
+  if [ ! -L /usr/lib/libpcre.so.3 ]; then
+    sudo ln -s /usr/lib/libpcre.so.1 /usr/lib/libpcre.so.3
+  fi
+  if [ ! -L /usr/lib32/libpcre.so.3 ]; then
+    sudo ln -s /usr/lib32/libpcre.so.1 /usr/lib32/libpcre.so.3
   fi
 
   # Log success
